@@ -4,7 +4,8 @@ import unicodedata
 from tqdm import trange, tqdm
 
 from run_squad_new import BertReader
-from retriever.anserini_retriever import anserini_retriever, build_searcher
+#from retriever.anserini_retriever import anserini_retriever, build_searcher
+from retriever.pyserini_retriever import anserini_retriever, build_searcher
 from utils import (convert_squad_to_list, normalize_text, init_logger, strip_accents)
 
 from args import *
