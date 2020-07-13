@@ -1,6 +1,6 @@
-# bertserini
+# BERTserini
 
-## install dependencies
+## Install dependencies
 
 ```
 conda create -n bertserini
@@ -11,18 +11,39 @@ pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pyto
 pip install tensorboardX
 ```
 
-## get index and lib ready
+## Get index and lib ready
 
-download the index and lib:
+download the prepared index and lib:
 ```
-wget ftp://72.143.107.253/BERTserini/bertserini.zip
+wget ftp://72.143.107.253/BERTserini/index.zip
+wget ftp://72.143.107.253/BERTserini/lib.zip
+````
+Inside contains two zips: index.zip and lib.zip
+index.zip contains the indexed latest wikipedia dump with Answerini.
+lib.zip contains the compiled .jar files needed for searching paragraphs using Anserini.
+After unzip these files, put them under the root path of this repo and then you are ready to go.
+Take the folloing folder structure as example:
 ```
-Inside contains two folder: index and lib, after unzip, put them under the root path of this folder and then you are ready to go.
+bertserini
++--- index
+|    +--- lucene-index.enwiki-20180701-paragraphs
+|    |    +--- ...
++--- lib
+|    +--- *.jar ...
++--- otherfiles under this repo
+```
 
-## run training
+## Download datasets:
+download the SQuAD datasets
 
+## Run training
+Please set the correct parameters in the following script and then run.
+```
 bash train.sh
+```
 
-## run inference under open-domain setting
+## Run inferencing SQuAD under open-domain setting
 
 bash test_search.sh
+
+## evaluation
