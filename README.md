@@ -13,7 +13,11 @@ pip install tensorboardX
 
 ## get index and lib ready
 
-download the index and lib from our dropbox:
+download the index and lib:
+```
+wget ftp://72.143.107.253/BERTserini/bertserini.zip
+```
+Inside contains two folder: index and lib, after unzip, put them under the root path of this folder and then you are ready to go.
 
 ## run training
 
