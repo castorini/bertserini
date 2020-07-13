@@ -6,6 +6,7 @@
 conda create -n bertserini
 conda activate bertserini
 conda install tqdm
+pip install pyserini
 pip install transformers 
 pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html # or install torch according to your cuda version
 pip install tensorboardX
