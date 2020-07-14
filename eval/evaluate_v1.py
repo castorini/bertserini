@@ -104,7 +104,7 @@ def evaluate(dataset, predictions):
                     logger.error(message)
                     continue
                 ground_truths = list(map(lambda x: x['text'], qa['answers']))
-                prediction = predictions[qa['id']]
+                prediction = [predictions[qa['id']]]
                 #prediction_sentence = predictions[qa['id']]['sentences']
                 cover += metric_max_recall(cover_score, prediction, ground_truths)
                 exact_match += metric_max_recall(
