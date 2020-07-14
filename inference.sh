@@ -1,10 +1,10 @@
 SQUAD_DIR=~/00_data/squad_v1.1/
 
 python ./search.py \
-    --para_num 100 \
+    --para_num 10 \
     --index_path index/lucene-index.enwiki-20180701-paragraphs \
     --model_type bert \
-    --model_name_or_path twmkn9/bert-base-uncased-squad2 \
+    --model_name_or_path ./tmp/debug_squad/ \
     --do_eval \
     --do_lower_case \
     --max_seq_length 384 \
