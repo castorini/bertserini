@@ -1,5 +1,15 @@
 # BERTserini
 
+## Introduction
+
+![Image of BERTserini](https://rsvp-ai/bertserini/pipeline.pdf)
+
+We demonstrate an end-to-end question answering system that integrates BERT with the open-source Pyserini information retrieval toolkit. In contrast to most question answering and reading comprehension models today, which operate over small amounts of input text, our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results on a standard benchmark test collection, showing that fine-tuning pretrained BERT with SQuAD is sufficient to achieve high accuracy in identifying answer spans.
+
+You can find the paper link [here](https://www.aclweb.org/anthology/N19-4013/)
+
+We also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets.
+
 ## Install dependencies
 
 ```
@@ -33,6 +43,8 @@ bertserini
 |    +--- *.jar ...
 +--- otherfiles under this repo
 ```
+
+To get the index on your own corpus, please refer to [Pyserini](https://github.com/castorini/pyserini).
 
 ## Download datasets:
 
