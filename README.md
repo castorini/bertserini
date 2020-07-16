@@ -1,16 +1,26 @@
 # BERTserini
 
-## Introduction
+![Image of BERTserini](https://github.com/rsvp-ai/bertserini/blob/master/pipeline.png?raw=true)
 
-![Image of BERTserini](https://github.com/rsvp-ai/bertserini/blob/master/architecture.pdf?raw=true)
-
-We demonstrate an end-to-end question answering system that integrates BERT with the open-source Pyserini information retrieval toolkit. In contrast to most question answering and reading comprehension models today, which operate over small amounts of input text, our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results on a standard benchmark test collection, showing that fine-tuning pretrained BERT with SQuAD is sufficient to achieve high accuracy in identifying answer spans.
+We demonstrate an end-to-end open-domain question answering system that integrates BERT with the open-source Pyserini information retrieval toolkit. Our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results (such as DrQA) on a standard benchmark test collection, showing that fine-tuning pretrained BERT with SQuAD is sufficient to achieve high accuracy in identifying answer spans under open domain setting.
 
 You can find the paper link [here](https://www.aclweb.org/anthology/N19-4013/)
 
-We also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets.
+We have uploaded the finetuned checkpoints to the huggingface models: \
+[bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
+[bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad) 
+
+We will also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. \
+% TODO: Chinese version is not ready yet.
+
+# How to Run
+
+Next, we describe how to run the pipeline.
 
 ## Install dependencies
+First step is to prepare the python dependencies. \
+Pyserini is the repo that wrap Anserini with python APIs. 
+Please refer to their repo [Pyserini](https://github.com/castorini/pyserini) for detailed useage. Also, this wrapper only contain some of the features in Anserini, you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
 
 ```
 conda create -n bertserini
@@ -24,14 +34,11 @@ pip install tensorboardX
 
 ## Get index and lib ready
 
-download the prepared index and lib:
+We have indexed the 20180701 wikipedia dump used in DrQA with Anserini, you can download the prepared index here:
 ```
 wget ftp://72.143.107.253/BERTserini/index.zip
-wget ftp://72.143.107.253/BERTserini/lib.zip
 ````
-Inside contains two zips: index.zip and lib.zip
 index.zip contains the indexed latest wikipedia dump with Answerini.
-lib.zip contains the compiled .jar files needed for searching paragraphs using Anserini.
 After unzip these files, put them under the root path of this repo and then you are ready to go.
 Take the folloing folder structure as example:
 ```
@@ -39,8 +46,6 @@ bertserini
 +--- index
 |    +--- lucene-index.enwiki-20180701-paragraphs
 |    |    +--- ...
-+--- lib
-|    +--- *.jar ...
 +--- otherfiles under this repo
 ```
 
@@ -53,20 +58,15 @@ wget https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json
 wget https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json
 ```
 
-## Run training
-Please set the correct parameters in the following script and then run.
-```
-bash train.sh
-```
-This script will run the training for BERT on SQuAD dataset.
-It will generate checkpoints under ./tmp/debug_squad/
-
 ## Run inferencing SQuAD under open-domain setting
-Set the ckpt information in the below script, according to the path after training.
+
+Set the ckpt information in the below script, according to the path after training. \
+We have upload the checkpoints to hugging face, you can directly use them with the argments```--model_name_or_path rsvp-ai/bertserini-bert-base-squad``` or ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad``` in the ```inference.sh``` script. \ 
+Then run:
 ```
 bash inference.sh
 ```
-It will generate inference results on SQuAD 1.1, under the path of ./results/
+It will generate inference results on SQuAD, under the path of ./results/
 
 ## evaluation
 Set the result path according to the inference result path
@@ -84,3 +84,14 @@ This will first automatically select the parameter to aggregate paragraph score 
 ## BERT-base-uncased
 (0.5, {'exact_match': 39.89593188268685, 'f1': 47.58710784120026, 'recall': 49.27586877280707, 'precision': 48.10849111109448, 'cover': 45.31693472090823, 'overlap': 56.00756859035005})
 ```
+
+## Run training
+You can also train the base model from other pretrained model as long as it is already supporting Question Answering. \
+
+Please set the correct parameters in the following script and then run.
+```
+bash train.sh
+```
+This script will run the training for BERT on SQuAD dataset.
+It will generate checkpoints under ./tmp/
+
