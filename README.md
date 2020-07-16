@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![Image of BERTserini](https://rsvp-ai/bertserini/architecture.pdf)
+![Image of BERTserini](https://github.com/rsvp-ai/bertserini/architecture.pdf)
 
 We demonstrate an end-to-end question answering system that integrates BERT with the open-source Pyserini information retrieval toolkit. In contrast to most question answering and reading comprehension models today, which operate over small amounts of input text, our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results on a standard benchmark test collection, showing that fine-tuning pretrained BERT with SQuAD is sufficient to achieve high accuracy in identifying answer spans.
 
