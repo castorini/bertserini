@@ -76,6 +76,11 @@ bash eval.sh
 This will first automatically select the parameter to aggregate paragraph score (from Pyserini) and phrase score (from BERT), and finally select the best parameter and print the evaluation matrixs.
 ```
 # expected result:
+
+## BERT-large-wwm-uncased
 (0.4, {'exact_match': 40.89877010406812, 'f1': 48.827808932780215, 'recall': 50.644587225343955, 
 'precision': 49.308238592369754, 'cover': 46.87795648060549, 'overlap': 57.28476821192053})
+
+## BERT-base-uncased
+(0.5, {'exact_match': 39.89593188268685, 'f1': 47.58710784120026, 'recall': 49.27586877280707, 'precision': 48.10849111109448, 'cover': 45.31693472090823, 'overlap': 56.00756859035005})
 ```
