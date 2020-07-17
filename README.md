@@ -1,10 +1,11 @@
 # BERTserini
 
+This is a release of our BERTserini model referenced in [End-to-End Open-Domain Question Answering with BERTserini](https://www.aclweb.org/anthology/N19-4013/). 
+
 ![Image of BERTserini](https://github.com/rsvp-ai/bertserini/blob/master/pipeline.png?raw=true)
 
-We demonstrate an end-to-end open-domain question answering system that integrates BERT with the open-source Pyserini information retrieval toolkit. Our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results (such as DrQA) on a standard benchmark test collection, showing that fine-tuning pretrained BERT with SQuAD is sufficient to achieve high accuracy in identifying answer spans under open domain setting.
+We demonstrate an end-to-end Open-Domain question answering system that integrates BERT with the open-source [Pyserini](https://github.com/castorini/pyserini) information retrieval toolkit. Our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results (such as [DrQA system](https://github.com/facebookresearch/DrQA)) on a standard benchmark test collection. It is showing that fine-tuning pretrained BERT with [SQuAD](https://arxiv.org/abs/1606.05250) is sufficient to achieve high accuracy in identifying answer spans under Open Domain setting.
 
-You can find the paper link [here](https://www.aclweb.org/anthology/N19-4013/)
 
 We have uploaded the finetuned checkpoints to the huggingface models: \
 [bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
@@ -95,3 +96,16 @@ bash train.sh
 This script will run the training for BERT on SQuAD dataset.
 It will generate checkpoints under ./tmp/
 
+
+## Citation
+
+Please cite [the NAACL 2019 paper]((https://www.aclweb.org/anthology/N19-4013/)):
+
+```
+@article{yang2019end,
+  title={End-to-end open-domain question answering with bertserini},
+  author={Yang, Wei and Xie, Yuqing and Lin, Aileen and Li, Xingyu and Tan, Luchen and Xiong, Kun and Li, Ming and Lin, Jimmy},
+  journal={arXiv preprint arXiv:1902.01718},
+  year={2019}
+}
+```
