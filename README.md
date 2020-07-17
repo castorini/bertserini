@@ -8,6 +8,16 @@ This is a release of our **BERTserini** model referenced in [End-to-End Open-Dom
 
 We demonstrate an end-to-end Open-Domain question answering system that integrates BERT with the open-source [Pyserini](https://github.com/castorini/pyserini) information retrieval toolkit. Our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results (such as [DrQA system](https://github.com/facebookresearch/DrQA)) on a standard benchmark test collection. It is showing that fine-tuning pretrained BERT with [SQuAD 1.1 Dataset](https://arxiv.org/abs/1606.05250) is sufficient to achieve high accuracy in identifying answer spans under Open Domain setting.
 
+Following the Open Domain QA setting of DrQA, we are using Wikipedia as the large scale knowledge source of documents. In order to anwer questions, the system first retrieve several candidate text segmentations among the entire knowledge source of documents, then read through the candidate text segments to determine the answers.
+
+# Quick Start
+
+1. Install dependencies
+2. Download the builtup Wikipedia index
+3. Download the pretrained models
+4. 
+
+
 
 We have uploaded the finetuned checkpoints to the huggingface models: \
 [bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
