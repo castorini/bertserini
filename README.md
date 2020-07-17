@@ -12,8 +12,8 @@ Following the Open Domain QA setting of DrQA, we are using Wikipedia as the larg
 
 # Quick Start
 
-1. Install dependencies
-2. Download the builtup Wikipedia index
+1. [Install dependencies](#install-dependencies)
+2. [Download the PreBuilt Wikipedia index](#download-prebuilt-wikipedia-index)
 3. Download the pretrained models
 4. 
 
@@ -45,7 +45,7 @@ pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pyto
 pip install tensorboardX
 ```
 
-## Get index and lib ready
+## Download PreBuilt Wikipedia Index
 
 We have indexed the 20180701 wikipedia dump used in DrQA with Anserini, you can download the prepared index here:
 ```
