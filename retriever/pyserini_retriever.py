@@ -9,6 +9,9 @@ logger = init_logger("anserini_retriever")
 def build_searcher(k1=0.9, b=0.4, index_path="index/lucene-index.wiki_paragraph_drqa.pos+docvectors", segmented=False, rm3=False, chinese=False):
     searcher = SimpleSearcher(index_path)
     searcher.set_bm25(k1, b)
+    if chinese:
+        searcher.object.setLanguage("zh")
+        print("########### we are usinig Chinese retriever ##########")
     return searcher
 
 def anserini_retriever(question, searcher, para_num=20, tag=""):

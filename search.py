@@ -22,7 +22,7 @@ if __name__ == "__main__":
     QAs = convert_squad_to_list(args.predict_file)
 
     bert_reader = BertReader(args)
-    ansrini_searcher = build_searcher(args.k1, args.b, args.index_path, args.rm3)
+    ansrini_searcher = build_searcher(args.k1, args.b, args.index_path, args.rm3, chinese=args.chinese)
 
     count_hit = [0] * (args.para_num)
     count_total = [0] * (args.para_num)
