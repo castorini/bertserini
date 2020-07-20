@@ -19,15 +19,6 @@ Following the Open Domain QA setting of DrQA, we are using Wikipedia as the larg
 
 Now you are good to go.
 
-## Download the pretrained models
-
-We have uploaded the finetuned checkpoints to the huggingface models: \
-[bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
-[bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad) 
-
-We will also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. \
-% TODO: Chinese version is not ready yet.
-
 ## Install dependencies
 First step is to prepare the python dependencies. \
 Pyserini is the repo that wrap Anserini with python APIs. 
@@ -60,7 +51,15 @@ bertserini
 +--- otherfiles under this repo
 ```
 
-To get the index on your own corpus, please refer to [Pyserini](https://github.com/castorini/pyserini).
+## Download the pretrained models
+
+We have uploaded the finetuned checkpoints to the huggingface models: \
+[bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
+[bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad) 
+
+To run our finetuned model, just set ```--model_name_or_path rsvp-ai/bertserini-bert-base-squad``` or ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad```.
+
+We will also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. 
 
 ## Start the system
 
@@ -70,21 +69,34 @@ bash demo.sh
 ``` 
 You can try our finetuned model with the wikipedia articles.
 
-# Self defined training, inferencing and evaluation
+# Training, inferencing and evaluating using your own data
 
-You may use your own data on this system, we provide the procedure on SQuAD dataset for your reference.
+You may use your own data on this system, we provide the steps based on SQuAD dataset.
 
-## Download training datasets:
+## Prepare index files:
+To get the index on your own corpus, please refer to [Pyserini](https://github.com/castorini/pyserini#how-do-i-search-my-own-documents). \
+
+After getting the index, put it under the path ```bertserini/index/```
+
+## Prepare the training datasets:
 
 ```
 wget https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json
 wget https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json
 ```
+## Training
+Please set the correct parameters in the following script and then run.
+```
+bash train.sh
+```
+This script will run the training for BERT on SQuAD dataset.
+It will generate checkpoints under ./tmp/ \
+You can also train the base model from other pretrained model as long as it is already supporting Question Answering. 
 
-## Run inferencing SQuAD under open-domain setting
+## Inferencing SQuAD under open-domain setting
 
 Set the ckpt information in the below script, according to the path after training. \
-We have upload the checkpoints to hugging face, you can directly use them with the argments```--model_name_or_path rsvp-ai/bertserini-bert-base-squad``` or ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad``` in the ```inference.sh``` script. \ 
+We have upload the finetuned checkpoints to hugging face, you can directly use them with the argments```--model_name_or_path rsvp-ai/bertserini-bert-base-squad``` or ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad``` in the ```inference.sh``` script. \ 
 Then run:
 ```
 bash inference.sh
@@ -98,7 +110,7 @@ bash eval.sh
 ```
 This will first automatically select the parameter to aggregate paragraph score (from Pyserini) and phrase score (from BERT), and finally select the best parameter and print the evaluation matrixs.
 ```
-# expected result:
+# expected results:
 
 ## BERT-large-wwm-uncased
 (0.4, {'exact_match': 40.89877010406812, 'f1': 48.827808932780215, 'recall': 50.644587225343955, 
@@ -107,16 +119,6 @@ This will first automatically select the parameter to aggregate paragraph score 
 ## BERT-base-uncased
 (0.5, {'exact_match': 39.89593188268685, 'f1': 47.58710784120026, 'recall': 49.27586877280707, 'precision': 48.10849111109448, 'cover': 45.31693472090823, 'overlap': 56.00756859035005})
 ```
-
-## Run training
-You can also train the base model from other pretrained model as long as it is already supporting Question Answering. \
-
-Please set the correct parameters in the following script and then run.
-```
-bash train.sh
-```
-This script will run the training for BERT on SQuAD dataset.
-It will generate checkpoints under ./tmp/
 
 
 ## Citation
