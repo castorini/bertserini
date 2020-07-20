@@ -15,14 +15,12 @@ Following the Open Domain QA setting of DrQA, we are using Wikipedia as the larg
 1. [Install dependencies](#install-dependencies)
 2. [Download the PreBuilt Wikipedia index](#download-prebuilt-wikipedia-index)
 3. [Download the pretrained models](#download-the-pretrained-models)
-4. [Start the system](#start-the-system)
+4. [Quick Start the Demo](#start-the-demo)
 
-Now you are good to go.
 
 ## Install dependencies
-The first step is to prepare the python dependencies. \
-Pyserini is the repo that wraps Anserini with Python APIs. 
-Please refer to their repo [Pyserini](https://github.com/castorini/pyserini) for detailed usage. Also, this wrapper only contains some of the features in Anserini; you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
+
+BERTserini requires Python 3.5+ and a couple Python dependencies. Besides that, [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) is recommended for convinence. Please run the following commands to install the Python dependencies. 
 
 ```
 conda create -n bertserini
@@ -33,6 +31,10 @@ pip install transformers
 pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html # or install torch according to your cuda version
 pip install tensorboardX
 ```
+
+NOTE: Pyserini is the repo that wraps Anserini with Python APIs. 
+Please refer to their repo [Pyserini](https://github.com/castorini/pyserini) for detailed usage. Also, this wrapper only contains some of the features in Anserini; you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
+
 
 ## Download PreBuilt Wikipedia Index
 
@@ -61,7 +63,7 @@ To run our finetuned model, just set ```--model_name_or_path rsvp-ai/bertserini-
 
 We will also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. 
 
-## Start the system
+## Start the Demo
 
 To quickly try out the system, you should follow ```demo.sh``` to set the paths, then
 ```
