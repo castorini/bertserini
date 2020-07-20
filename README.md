@@ -32,8 +32,8 @@ pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pyto
 pip install tensorboardX
 ```
 
-NOTE: Pyserini is the repo that wraps Anserini with Python APIs. 
-Please refer to their repo [Pyserini](https://github.com/castorini/pyserini) for detailed usage. Also, this wrapper only contains some of the features in Anserini; you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
+NOTE: Pyserini is the Python wrapper for Anserini. 
+Please refer to their project [Pyserini](https://github.com/castorini/pyserini) for detailed usage. Also, Pyserini supports part of the features in Anserini; you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
 
 
 ## Download PreBuilt Wikipedia Index
