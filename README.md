@@ -14,10 +14,12 @@ Following the Open Domain QA setting of DrQA, we are using Wikipedia as the larg
 
 1. [Install dependencies](#install-dependencies)
 2. [Download the PreBuilt Wikipedia index](#download-prebuilt-wikipedia-index)
-3. Download the pretrained models
-4. 
+3. [Download the pretrained models](#download-the-pretrained-models)
+4. [Start the system](#start-the-system)
 
+Now you are good to go.
 
+## Download the pretrained models
 
 We have uploaded the finetuned checkpoints to the huggingface models: \
 [bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
@@ -25,10 +27,6 @@ We have uploaded the finetuned checkpoints to the huggingface models: \
 
 We will also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. \
 % TODO: Chinese version is not ready yet.
-
-# How to Run
-
-Next, we describe how to run the pipeline.
 
 ## Install dependencies
 First step is to prepare the python dependencies. \
@@ -64,7 +62,19 @@ bertserini
 
 To get the index on your own corpus, please refer to [Pyserini](https://github.com/castorini/pyserini).
 
-## Download datasets:
+## Start the system
+
+To quickly tryout the system, you should follow ```demo.sh``` to set the paths, then
+```
+bash demo.sh
+``` 
+You can try our finetuned model with the wikipedia articles.
+
+# Self defined training, inferencing and evaluation
+
+You may use your own data on this system, we provide the procedure on SQuAD dataset for your reference.
+
+## Download training datasets:
 
 ```
 wget https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json
