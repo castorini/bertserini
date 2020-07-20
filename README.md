@@ -74,7 +74,7 @@ You can try our finetuned model with the wikipedia articles.
 You may use your own data on this system, we provide the steps based on SQuAD dataset.
 
 ## Prepare index files:
-To get the index on your own corpus, please refer to [Pyserini](https://github.com/castorini/pyserini#how-do-i-search-my-own-documents). \
+To get the index on your own corpus, please refer to [Pyserini](https://github.com/castorini/pyserini#how-do-i-search-my-own-documents). 
 
 After getting the index, put it under the path ```bertserini/index/```
 
@@ -103,7 +103,7 @@ bash inference.sh
 ```
 It will generate inference results on SQuAD, under the path of ./results/
 
-## evaluation
+## Evaluation
 Set the result path according to the inference result path
 ```
 bash eval.sh
