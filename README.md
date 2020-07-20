@@ -1,14 +1,14 @@
 # BERTserini
 
 
-This is a release of our **BERTserini** model referenced in [End-to-End Open-Domain Question Answering with BERTserini](https://www.aclweb.org/anthology/N19-4013/). 
+This repo is a release of our **BERTserini** model referenced in [End-to-End Open-Domain Question Answering with BERTserini](https://www.aclweb.org/anthology/N19-4013/). 
 
 
 ![Image of BERTserini](https://github.com/rsvp-ai/bertserini/blob/master/pipeline.png?raw=true)
 
-We demonstrate an end-to-end Open-Domain question answering system that integrates BERT with the open-source [Pyserini](https://github.com/castorini/pyserini) information retrieval toolkit. Our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report large improvements over previous results (such as [DrQA system](https://github.com/facebookresearch/DrQA)) on a standard benchmark test collection. It is showing that fine-tuning pretrained BERT with [SQuAD 1.1 Dataset](https://arxiv.org/abs/1606.05250) is sufficient to achieve high accuracy in identifying answer spans under Open Domain setting.
+We demonstrate an end-to-end Open-Domain question answering system that integrates BERT with the open-source [Pyserini](https://github.com/castorini/pyserini) information retrieval toolkit. Our system integrates best practices from IR with a BERT-based reader to identify answers from a large corpus of Wikipedia articles in an end-to-end fashion. We report significant improvements over previous results (such as [DrQA system](https://github.com/facebookresearch/DrQA)) on a standard benchmark test collection. It shows that fine-tuning pre-trained BERT with [SQuAD 1.1 Dataset](https://arxiv.org/abs/1606.05250) is sufficient to achieve high accuracy in identifying answer spans under Open Domain setting.
 
-Following the Open Domain QA setting of DrQA, we are using Wikipedia as the large scale knowledge source of documents. In order to anwer questions, the system first retrieve several candidate text segmentations among the entire knowledge source of documents, then read through the candidate text segments to determine the answers.
+Following the Open Domain QA setting of DrQA, we are using Wikipedia as the large scale knowledge source of documents. The system first retrieves several candidate text segmentations among the entire knowledge source of documents, then read through the candidate text segments to determine the answers.
 
 # Quick Start
 
@@ -20,9 +20,9 @@ Following the Open Domain QA setting of DrQA, we are using Wikipedia as the larg
 Now you are good to go.
 
 ## Install dependencies
-First step is to prepare the python dependencies. \
-Pyserini is the repo that wrap Anserini with python APIs. 
-Please refer to their repo [Pyserini](https://github.com/castorini/pyserini) for detailed useage. Also, this wrapper only contain some of the features in Anserini, you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
+The first step is to prepare the python dependencies. \
+Pyserini is the repo that wraps Anserini with Python APIs. 
+Please refer to their repo [Pyserini](https://github.com/castorini/pyserini) for detailed usage. Also, this wrapper only contains some of the features in Anserini; you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
 
 ```
 conda create -n bertserini
@@ -36,22 +36,22 @@ pip install tensorboardX
 
 ## Download PreBuilt Wikipedia Index
 
-We have indexed the 20180701 wikipedia dump used in DrQA with Anserini, you can download the prepared index here:
+We have indexed the 20180701 Wikipedia dump used in DrQA with Anserini; you can download the prepared index here:
 ```
 wget ftp://72.143.107.253/BERTserini/index.zip
 ````
-index.zip contains the indexed latest wikipedia dump with Answerini.
-After unzip these files, put them under the root path of this repo and then you are ready to go.
-Take the folloing folder structure as example:
+index.zip contains the indexed latest Wikipedia dump with Anserini.
+After unzipping these files, put them under the root path of this repo, and then you are ready to go.
+Take the following folder structure as an example:
 ```
 bertserini
 +--- index
 |    +--- lucene-index.enwiki-20180701-paragraphs
 |    |    +--- ...
-+--- otherfiles under this repo
++--- other files under this repo
 ```
 
-## Download the pretrained models
+## Download the pre-trained models
 
 We have uploaded the finetuned checkpoints to the huggingface models: \
 [bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
@@ -63,18 +63,18 @@ We will also provide the Chinese version of this pipeline on [CMRC](https://gith
 
 ## Start the system
 
-To quickly tryout the system, you should follow ```demo.sh``` to set the paths, then
+To quickly try out the system, you should follow ```demo.sh``` to set the paths, then
 ```
 bash demo.sh
 ``` 
-You can try our finetuned model with the wikipedia articles.
+You can try our fine-tuned model with the Wikipedia articles.
 
-# Training, inferencing and evaluating using your own data
+# Training, inferencing and evaluating using your data
 
-You may use your own data on this system, we provide the steps based on SQuAD dataset.
+You may use your data on this system; we provide the steps based on the SQuAD dataset.
 
 ## Prepare index files:
-To get the index on your own corpus, please refer to [Pyserini](https://github.com/castorini/pyserini#how-do-i-search-my-own-documents). 
+To get the index on your corpus, please refer to [Pyserini](https://github.com/castorini/pyserini#how-do-i-search-my-own-documents). 
 
 After getting the index, put it under the path ```bertserini/index/```
 
@@ -89,13 +89,13 @@ Please set the correct parameters in the following script and then run.
 ```
 bash train.sh
 ```
-This script will run the training for BERT on SQuAD dataset.
+This script will run the training for BERT on the SQuAD dataset.
 It will generate checkpoints under ./tmp/ \
-You can also train the base model from other pretrained model as long as it is already supporting Question Answering. 
+You can also train the base model from other pre-trained models as long as it is already supporting Question Answering. 
 
-## Inferencing SQuAD under open-domain setting
+## Inferencing SQuAD under the open-domain setting
 
-Set the ckpt information in the below script, according to the path after training. \
+Set the checkpoint information in the below script, according to the path after training. \
 We have upload the finetuned checkpoints to hugging face, you can directly use them with the argments```--model_name_or_path rsvp-ai/bertserini-bert-base-squad``` or ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad``` in the ```inference.sh``` script. \ 
 Then run:
 ```
@@ -104,11 +104,11 @@ bash inference.sh
 It will generate inference results on SQuAD, under the path of ./results/
 
 ## Evaluation
-Set the result path according to the inference result path
+Set the result paths according to the inference result path
 ```
 bash eval.sh
 ```
-This will first automatically select the parameter to aggregate paragraph score (from Pyserini) and phrase score (from BERT), and finally select the best parameter and print the evaluation matrixs.
+This script will first automatically select the parameter to aggregate paragraph score (from Pyserini) and phrase score (from BERT), and finally, select the best parameter and print the evaluation matrixs.
 ```
 # expected results:
 
