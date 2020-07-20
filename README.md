@@ -15,12 +15,13 @@ Following the Open Domain QA setting of DrQA, we are using Wikipedia as the larg
 1. [Install dependencies](#install-dependencies)
 2. [Download the PreBuilt Wikipedia index](#download-prebuilt-wikipedia-index)
 3. [Download the pretrained models](#download-the-pretrained-models)
-4. [Quick Start the Demo](#start-the-demo)
+4. [Quickly start the Demo](#start-the-demo)
 
 
 ## Install dependencies
 
-BERTserini requires Python 3.5+ and a couple Python dependencies. Besides that, [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) is recommended for convinence. Please run the following commands to install the Python dependencies. 
+BERTserini requires Python 3.5+ and a couple Python dependencies. The repo is tested on Python 3.6, Cuda 10.1, PyTorch 1.5.1 on Tesla P40 GPUs.
+Besides that, [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) is recommended for convinence. Please run the following commands to install the Python dependencies. 
 
 ```
 conda create -n bertserini
