@@ -1,7 +1,7 @@
 SQUAD_DIR=/data/yqxie/00_data/squad_v1.1
 
 python run_squad_new.py \
-  --model_type bert \
+  --model_type roberta \
   --model_name_or_path roberta-base \
   --do_train \
   --do_lower_case \
