@@ -36,6 +36,7 @@ from transformers import (
     AutoConfig,
     AutoModelForQuestionAnswering,
     AutoTokenizer,
+    AutoModelForSeq2SeqLM,
     get_linear_schedule_with_warmup,
     squad_convert_examples_to_features,
 )
@@ -529,7 +530,10 @@ class BertReader:
 
         # Reload the model
         global_step = ""
-        self.model = AutoModelForQuestionAnswering.from_pretrained(checkpoint)  # , force_download=True)
+        if "t5" in self.args.model_type:
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
+        else:
+            self.model = AutoModelForQuestionAnswering.from_pretrained(checkpoint)  # , force_download=True)
         self.model = self.model.to(args.device)
 
         self.model.eval()
@@ -542,6 +546,24 @@ class BertReader:
 
         # processor = SquadV2Processor() if self.args.version_2_with_negative else SquadV1Processor()
         # todo convert to single query examples
+
+        if "t5" in self.args.model_type:
+            # todo add paraller support
+            all_answers = []
+            for pid, paragraph in enumerate(paragraph_texts):
+                input_text = "question: %s  context: %s </s>" % (question, paragraph)
+                features = self.tokenizer([input_text], return_tensors='pt')
+                features = features.to(self.args.device)
+                out = self.model.generate(input_ids=features['input_ids'], attention_mask=features['attention_mask'])
+                answers = self.tokenizer.decode(out[0])
+                ans_dict = {
+                    "id": id_,
+                    "answer": answers,
+                    "phrase_score": 5,
+                    "paragraph_score": paragraph_scores[pid]}
+                all_answers.append(ans_dict)
+            return all_answers
+
         examples = create_inference_examples(question, paragraph_texts, paragraph_scores)
 
         features, dataset = squad_convert_examples_to_features(
