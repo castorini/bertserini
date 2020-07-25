@@ -189,10 +189,10 @@ def train(args, train_dataset, model, tokenizer):
                 "end_positions": batch[4],
             }
 
-            if args.model_type in ["xlm", "roberta", "distilbert", "camembert"]:
+            if args.model_type in ["xlm", "roberta", "distilbert", "camembert","bart"]:
                 del inputs["token_type_ids"]
 
-            if args.model_type in ["xlnet", "xlm"]:
+            if args.model_type in ["xlm"]:
                 inputs.update({"cls_index": batch[5], "p_mask": batch[6]})
                 if args.version_2_with_negative:
                     inputs.update({"is_impossible": batch[7]})
@@ -302,13 +302,13 @@ def evaluate(args, model, tokenizer, prefix=""):
                 "token_type_ids": batch[2],
             }
 
-            if args.model_type in ["xlm", "roberta", "distilbert", "camembert"]:
+            if args.model_type in ["xlm", "roberta", "distilbert", "camembert", "bart"]:
                 del inputs["token_type_ids"]
 
             feature_indices = batch[3]
 
             # XLNet and XLM use more arguments for their predictions
-            if args.model_type in ["xlnet", "xlm"]:
+            if args.model_type in ["xlm"]:
                 inputs.update({"cls_index": batch[4], "p_mask": batch[5]})
                 # for lang_id-sensitive xlm models
                 if hasattr(model, "config") and hasattr(model.config, "lang2id"):
@@ -361,7 +361,7 @@ def evaluate(args, model, tokenizer, prefix=""):
         output_null_log_odds_file = None
 
     # XLNet and XLM use a more complex post-processing procedure
-    if args.model_type in ["xlnet", "xlm"]:
+    if args.model_type in ["xlm"]:
         start_n_top = model.config.start_n_top if hasattr(model, "config") else model.module.config.start_n_top
         end_n_top = model.config.end_n_top if hasattr(model, "config") else model.module.config.end_n_top
 
@@ -588,21 +588,26 @@ class BertReader:
                     "token_type_ids": batch[2],
                 }
 
-                # if args.model_type in ["xlm", "roberta", "distilbert", "camembert"]:
-                #     del inputs["token_type_ids"]
+                if self.args.model_type in ["xlm", "roberta", "distilbert", "camembert", "bart"]:
+                    del inputs["token_type_ids"]
 
                 feature_indices = batch[3]
 
-                # XLNet and XLM use more arguments for their predictions
-                # if args.model_type in ["xlnet", "xlm"]:
-                #     inputs.update({"cls_index": batch[4], "p_mask": batch[5]})
-                #     # for lang_id-sensitive xlm models
-                #     if hasattr(model, "config") and hasattr(model.config, "lang2id"):
-                #         inputs.update(
-                #             {"langs": (torch.ones(batch[0].shape, dtype=torch.int64) * args.lang_id).to(args.device)}
-                #         )
-
-                outputs = self.model(**inputs)
+                #XLNet and XLM use more arguments for their predictions
+                if self.args.model_type in ["xlm"]:
+                    inputs.update({"cls_index": batch[4], "p_mask": batch[5]})
+                    # for lang_id-sensitive xlm models
+                    if hasattr(self.model, "config") and hasattr(self.model.config, "lang2id"):
+                        inputs.update(
+                            {"langs": (torch.ones(batch[0].shape, dtype=torch.int64) * self.args.lang_id).to(self.args.device)}
+                        )
+                if self.args.model_type == "bart":
+                    #start_positions = torch.tensor([1])
+                    #end_positions = torch.tensor([3])
+                    #outputs = self.model(**inputs, start_positions=start_positions, end_positions=end_positions)
+                    outputs = self.model(**inputs)
+                else:
+                    outputs = self.model(**inputs)
 
             for i, feature_index in enumerate(feature_indices):
                 eval_feature = features[feature_index.item()]
@@ -612,7 +617,10 @@ class BertReader:
 
                 # Some models (XLNet, XLM) use 5 arguments for their predictions, while the other "simpler"
                 # models only use two.
-                if len(output) >= 5:
+                if self.args.model_type == "bart":
+                    start_logits, end_logits = output[:2]
+                    result = SquadResult(unique_id, start_logits, end_logits)
+                elif len(output) >= 5:
                     start_logits = output[0]
                     start_top_index = output[1]
                     end_logits = output[2]
@@ -627,7 +635,6 @@ class BertReader:
                         end_top_index=end_top_index,
                         cls_logits=cls_logits,
                     )
-
                 else:
                     start_logits, end_logits = output
                     result = SquadResult(unique_id, start_logits, end_logits)

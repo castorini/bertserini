@@ -1,4 +1,6 @@
-SQUAD_DIR=/data/yqxie/00_data/squad_v1.1
+SQUAD_DIR=/data/y247xie/00_data/squad/v1.1
+
+export CUDA_VISIABLE_DEVICES=0
 
 python run_squad_new.py \
   --model_type longformer \
@@ -7,7 +9,7 @@ python run_squad_new.py \
   --do_lower_case \
   --train_file $SQUAD_DIR/train-v1.1.json \
   --predict_file $SQUAD_DIR/dev-v1.1.json \
-  --per_gpu_train_batch_size 12 \
+  --per_gpu_train_batch_size 8 \
   --learning_rate 3e-5 \
   --num_train_epochs 2.0 \
   --max_seq_length 384 \

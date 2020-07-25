@@ -1,4 +1,4 @@
-SQUAD_DIR=~/00_data/squad_v1.1/
+SQUAD_DIR=/data/y247xie/00_data/squad/v1.1
 
 python ./search.py \
     --para_num 10 \
