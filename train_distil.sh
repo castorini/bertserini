@@ -12,5 +12,5 @@ python run_squad_new.py \
   --num_train_epochs 2.0 \
   --max_seq_length 384 \
   --doc_stride 128 \
-  --output_dir ./tmp/distill-base-squad/
+  --output_dir ./tmp/distil-base-squad/
 

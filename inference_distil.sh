@@ -4,7 +4,7 @@ python ./search.py \
     --para_num 10 \
     --index_path index/lucene-index.enwiki-20180701-paragraphs \
     --model_type distilbert \
-    --model_name_or_path ./tmp/distill-base-squad \
+    --model_name_or_path ./tmp/distil-base-squad \
     --do_eval \
     --do_lower_case \
     --max_seq_length 384 \
