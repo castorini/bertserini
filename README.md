@@ -115,6 +115,9 @@ This script will first automatically select the parameter to aggregate paragraph
 ```
 # expected results:
 
+## bert-large-uncased-whole-word-masking-finetuned-squad, this is finetuned based on bert-large-uncased-whole-word-masking
+(0.5, {'exact_match': 43.65184484389783, 'f1': 50.942504639546485, 'recall': 52.32886737510793, 'precision': 51.54318623526059, 'cover': 48.57142857142857, 'overlap': 58.63765373699149})
+
 ## rsvp-ai/bertserini-large-squad, this is finetuned based on bert-large-wwm-uncased
 (0.4, {'exact_match': 41.54210028382214, 'f1': 49.45378799697662, 'recall': 51.119838584003105, 'precision': 49.8395951713666, 'cover': 47.228003784295176, 'overlap': 57.6631977294229})
 
