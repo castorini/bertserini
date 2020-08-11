@@ -1,5 +1,5 @@
-DIR=./results/bert_wwm_cmrc
-FILE=test_inference.json
+DIR=./results/cmrc_new
+FILE=test_inference_cmrc.json
 DATA_PATH=/data/yqxie/00_data/cmrc2018/data/cmrc2018_dev.json
 
 python aggregate.py \

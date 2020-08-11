@@ -1,8 +1,8 @@
 SQUAD_DIR=/data/yqxie/00_data/cmrc2018/data
 
 python run_squad_new.py \
-  --model_type bert \
-  --model_name_or_path tmp/cmrc_base  \
+  --model_type roberta \
+  --model_name_or_path tmp/cmrc_electra_large \
   --do_eval \
   --do_lower_case \
   --train_file $SQUAD_DIR/cmrc_train_to_squad.json \
@@ -12,5 +12,5 @@ python run_squad_new.py \
   --num_train_epochs 2.0 \
   --max_seq_length 384 \
   --doc_stride 128 \
-  --output_dir ./tmp/cmrc_base
+  --output_dir ./tmp/cmrc_electra_large/
 

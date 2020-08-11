@@ -1,5 +1,5 @@
-DIR=./results/bert_wwm_drcd
-FILE=test_inference.json
+DIR=./results/drcd_base
+FILE=test_inference_drcd.json
 DATA_PATH=/data/yqxie/00_data/DRCD/DRCD_dev.json
 
 python aggregate.py \

@@ -100,7 +100,7 @@ def evaluate(ground_truth_file_name, prediction_file_name):
             em_now = calc_em_score(answers, prediction)
             f1 += f1_now
             em += em_now
-            print("Q:{}\tG:{}\tP:{}".format(query_text, answers, prediction))
+            # print("Q:{}\tG:{}\tP:{}".format(query_text, answers, prediction))
             #     print("Q:{}\tG:{}\tP:{}\tf1:{}".format(query_text, answers, prediction, f1_now))
 
     f1_score = 100.0 * f1 / total_count
@@ -127,7 +127,6 @@ def evaluate_general(ground_truth_file, prediction_file):
 			continue
 
 		prediction 	= [prediction_file[query_id]]
-		print(prediction)
 		#logger.info("Q:{} G:{} P:{}".format(query_text, answers, prediction))
 		f1 += calc_f1_score(answers, prediction)
 		em += calc_em_score(answers, prediction)
@@ -161,8 +160,8 @@ def calc_em_score(answers, prediction):
 		if ans_ == prediction_:
 			em = 1
 			break
-		#else:
-			#logger.info("{} {}".format(ans_, prediction_))
+		else:
+			print("{} {}".format(ans_, prediction_)) #logger.info("{} {}".format(ans_, prediction_))
 	return em
 
 if __name__ == '__main__':

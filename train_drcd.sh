@@ -2,8 +2,8 @@ SQUAD_DIR=/data/yqxie/00_data/DRCD
 
 python run_squad_new.py \
   --model_type bert \
-  --model_name_or_path hfl/chinese-bert-wwm-ext \
-  --do_train \
+  --model_name_or_path tmp/drcd_base \
+  --do_eval \
   --do_lower_case \
   --train_file $SQUAD_DIR/DRCD_training.json \
   --predict_file $SQUAD_DIR/DRCD_dev.json \
@@ -12,5 +12,5 @@ python run_squad_new.py \
   --num_train_epochs 2.0 \
   --max_seq_length 384 \
   --doc_stride 128 \
-  --output_dir ./tmp/debug_bert_base_drcd/
+  --output_dir ./tmp/drcd_base/
 

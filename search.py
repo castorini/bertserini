@@ -3,9 +3,11 @@ import time
 import unicodedata
 from tqdm import trange, tqdm
 
+from hanziconv import HanziConv
+
 from run_squad_new import BertReader
-#from retriever.anserini_retriever import anserini_retriever, build_searcher
-from retriever.pyserini_retriever import anserini_retriever, build_searcher
+from retriever.anserini_retriever import anserini_retriever, build_searcher
+#from retriever.pyserini_retriever import anserini_retriever, build_searcher
 from utils import (convert_squad_to_list, normalize_text, init_logger, strip_accents)
 
 from args import *
@@ -32,7 +34,12 @@ if __name__ == "__main__":
     for question_id in trange(len(QAs)):
         start_time = time.time()
         question = strip_accents(QAs[question_id]['question']) # convert Latin into English
-        paragraphs = anserini_retriever(question, ansrini_searcher, args.para_num)
+        if args.chinese:
+            if args.toSimplified:
+                question = HanziConv.toSimplified(question)
+            paragraphs = anserini_retriever(question.encode("utf-8"), ansrini_searcher, args.para_num)
+        else:
+            paragraphs = anserini_retriever(question, ansrini_searcher, args.para_num)
         if len(paragraphs) == 0:
             continue
         paragraph_texts = []
