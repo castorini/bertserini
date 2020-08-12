@@ -25,7 +25,7 @@ def build_searcher(k1=0.9, b=0.4, index_path="index/lucene-index.wiki_paragraph_
 def anserini_retriever(question, searcher, para_num=20, tag=""):
     try:
         #hits = searcher.search(JString(question), para_num, JString(tag))
-        hits = searcher.search(JString(question), para_num)
+        hits = searcher.search(JString(question.encode("utf-8")), para_num)
     except ValueError as e:
         logger.error("Search failure: {}, {}".format(question, e))
         return []
