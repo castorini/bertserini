@@ -1,6 +1,6 @@
 SQUAD_DIR=~/00_data/squad_v1.1/
 
-python ./search.py \
+python ./search_py.py \
     --para_num 10 \
     --index_path index/lucene-index.enwiki-20180701-paragraphs \
     --model_type bert \
