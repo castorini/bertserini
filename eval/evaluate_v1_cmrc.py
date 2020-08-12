@@ -160,8 +160,8 @@ def calc_em_score(answers, prediction):
 		if ans_ == prediction_:
 			em = 1
 			break
-		else:
-			print("{} {}".format(ans_, prediction_)) #logger.info("{} {}".format(ans_, prediction_))
+		#else:
+		#	print("{} {}".format(ans_, prediction_)) #logger.info("{} {}".format(ans_, prediction_))
 	return em
 
 if __name__ == '__main__':
