@@ -663,6 +663,7 @@ class BertReader:
                 self.args.version_2_with_negative,
                 self.tokenizer,
                 self.args.verbose_logging,
+                self.args.chinese
             )
         else:
             answers, nbest_answers = compute_predictions_logits(
@@ -679,31 +680,15 @@ class BertReader:
                 self.args.version_2_with_negative,
                 self.args.null_score_diff_threshold,
                 self.tokenizer,
+                self.args.chinese
             )
-
-        # Compute the F1 and exact scores.
-        # results = squad_evaluate(examples, predictions)
-        # return results
-        # print(predictions)
-        # input()
-
-        # answers, nbest_answers = form_answer(self.tokenizer, examples, features,
-        #                                      all_results, self.args.n_best_size,
-        #                                      self.args.max_answer_length, self.args.do_lower_case, "",
-        #                                      "", "", self.args.verbose_logging,
-        #                                      self.args.version_2_with_negative,
-        #                                      self.args.null_score_diff_threshold,
-        #                                      chinese=self.args.chinese)
-        #
 
         all_answers = []
         for answer_id, ans in enumerate(answers):
             ans_dict = {"id": id_,
                         "answer": answers[ans][0],
                         "phrase_score": answers[ans][1],
-                        #"sentence": answers[ans][2],
                         "paragraph_score": paragraph_scores[answer_id],
-                        # "features": paragraph_features[answer_id]
                         }
             all_answers.append(ans_dict)
         return all_answers

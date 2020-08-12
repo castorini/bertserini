@@ -382,6 +382,7 @@ def compute_predictions_logits(
     version_2_with_negative,
     null_score_diff_threshold,
     tokenizer,
+    chinese=False,
 ):
     """Write final predictions to the json file and log-odds of null if needed."""
     if output_prediction_file:
@@ -495,8 +496,12 @@ def compute_predictions_logits(
 
                 # Clean whitespace
                 tok_text = tok_text.strip()
-                tok_text = " ".join(tok_text.split())
-                orig_text = " ".join(orig_tokens)
+                if chinese:
+                    tok_text = "".join(tok_text.split())
+                    orig_text = "".join(orig_tokens)
+                else:
+                    tok_text = " ".join(tok_text.split())
+                    orig_text = " ".join(orig_tokens)
 
                 final_text = get_final_text(tok_text, orig_text, do_lower_case, tokenizer, verbose_logging)
                 if final_text in seen_predictions:
@@ -591,6 +596,7 @@ def compute_predictions_log_probs(
     version_2_with_negative,
     tokenizer,
     verbose_logging,
+    chinese=False,
 ):
     """ XLNet write prediction logic (more complex than Bert's).
         Write final predictions to the json file and log-odds of null if needed.
@@ -701,8 +707,12 @@ def compute_predictions_log_probs(
 
             # Clean whitespace
             tok_text = tok_text.strip()
-            tok_text = " ".join(tok_text.split())
-            orig_text = " ".join(orig_tokens)
+            if chinese:
+                tok_text = "".join(tok_text.split())
+                orig_text = "".join(orig_tokens)
+            else:
+                tok_text = " ".join(tok_text.split())
+                orig_text = " ".join(orig_tokens)
 
             if hasattr(tokenizer, "do_lower_case"):
                 do_lower_case = tokenizer.do_lower_case
