@@ -31,7 +31,7 @@ if __name__ == "__main__":
         for paragraph_id, paragraph in enumerate(paragraphs):
             paragraph_texts.append(paragraph['text'])
             paragraph_scores.append(paragraph['paragraph_score'])
-        print(paragraph_texts[:3])
+        #print(paragraph_texts[:3])
         
         final_answers = bert_reader.predict(0, question, paragraph_texts, paragraph_scores)
         mu = 0.45

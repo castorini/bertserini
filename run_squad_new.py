@@ -633,53 +633,52 @@ class BertReader:
                     result = SquadResult(unique_id, start_logits, end_logits)
 
                 all_results.append(result)
-        evalTime = timeit.default_timer() - start_time
-        logger.info("  Evaluation done in total %f secs (%f sec per example)", evalTime, evalTime / len(dataset))
 
         # Compute predictions
-        output_prediction_file = os.path.join(args.output_dir, "predictions_{}.json".format(prefix))
-        output_nbest_file = os.path.join(args.output_dir, "nbest_predictions_{}.json".format(prefix))
+        prefix = ""
+        output_prediction_file = os.path.join(self.args.output_dir, "predictions_{}.json".format(prefix))
+        output_nbest_file = os.path.join(self.args.output_dir, "nbest_predictions_{}.json".format(prefix))
 
-        if args.version_2_with_negative:
-            output_null_log_odds_file = os.path.join(args.output_dir, "null_odds_{}.json".format(prefix))
+        if self.args.version_2_with_negative:
+            output_null_log_odds_file = os.path.join(self.args.output_dir, "null_odds_{}.json".format(prefix))
         else:
             output_null_log_odds_file = None
 
         # XLNet and XLM use a more complex post-processing procedure
-        if args.model_type in ["xlnet", "xlm"]:
-            start_n_top = model.config.start_n_top if hasattr(model, "config") else model.module.config.start_n_top
-            end_n_top = model.config.end_n_top if hasattr(model, "config") else model.module.config.end_n_top
+        if self.args.model_type in ["xlnet", "xlm"]:
+            start_n_top = self.model.config.start_n_top if hasattr(self.model, "config") else self.model.module.config.start_n_top
+            end_n_top = self.model.config.end_n_top if hasattr(self.model, "config") else self.model.module.config.end_n_top
 
             predictions = compute_predictions_log_probs(
                 examples,
                 features,
                 all_results,
-                args.n_best_size,
-                args.max_answer_length,
+                self.args.n_best_size,
+                self.args.max_answer_length,
                 output_prediction_file,
                 output_nbest_file,
                 output_null_log_odds_file,
                 start_n_top,
                 end_n_top,
-                args.version_2_with_negative,
-                tokenizer,
-                args.verbose_logging,
+                self.args.version_2_with_negative,
+                self.tokenizer,
+                self.args.verbose_logging,
             )
         else:
             predictions = compute_predictions_logits(
                 examples,
                 features,
                 all_results,
-                args.n_best_size,
-                args.max_answer_length,
-                args.do_lower_case,
+                self.args.n_best_size,
+                self.args.max_answer_length,
+                self.args.do_lower_case,
                 output_prediction_file,
                 output_nbest_file,
                 output_null_log_odds_file,
-                args.verbose_logging,
-                args.version_2_with_negative,
-                args.null_score_diff_threshold,
-                tokenizer,
+                self.args.verbose_logging,
+                self.args.version_2_with_negative,
+                self.args.null_score_diff_threshold,
+                self.tokenizer,
             )
 
         # Compute the F1 and exact scores.
