@@ -543,10 +543,6 @@ class BertReader:
         # processor = SquadV2Processor() if self.args.version_2_with_negative else SquadV1Processor()
         # todo convert to single query examples
         examples = create_inference_examples(question, paragraph_texts, paragraph_scores)
-        print(examples[0].question_text)
-        print(examples[0].context_text)
-        print(examples[0].answer_text)
-        input()
 
         features, dataset = squad_convert_examples_to_features(
             examples=examples,

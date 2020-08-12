@@ -37,7 +37,7 @@ if __name__ == "__main__":
         if args.chinese:
             if args.toSimplified:
                 question = HanziConv.toSimplified(question)
-            paragraphs = anserini_retriever(question.encode("utf-8"), ansrini_searcher, args.para_num)
+            paragraphs = anserini_retriever(question, ansrini_searcher, args.para_num)
         else:
             paragraphs = anserini_retriever(question, ansrini_searcher, args.para_num)
         if len(paragraphs) == 0:
