@@ -558,13 +558,13 @@ RawResult = collections.namedtuple("RawResult",
 #                 #for i in range(len(feature.sentence_end_token[0])):
 #                 #    if orig_doc_start < feature.sentence_end_token[0][i]:
 #                 #        break
-#                 #sentence_start = feature.sentence_end_token[0][i - 1] + 1
-#                 #sentence_end = feature.sentence_end_token[0][i]
-#                 #sentence_tokens = example.doc_tokens[sentence_start: sentence_end + 1]
-#                 #if chinese:
-#                 #    sentence = "".join(sentence_tokens)
-#                 #else:
-#                 #    sentence = " ".join(sentence_tokens)
+#                 # sentence_start = feature.sentence_end_token[0][i - 1] + 1
+#                 # sentence_end = feature.sentence_end_token[0][i]
+#                 # sentence_tokens = example.doc_tokens[sentence_start: sentence_end + 1]
+#                 # if chinese:
+#                 #     sentence = "".join(sentence_tokens)
+#                 # else:
+#                 #     sentence = " ".join(sentence_tokens)
 #
 #                 orig_tokens = example.doc_tokens[orig_doc_start:(orig_doc_end + 1)]
 #                 if chinese:
