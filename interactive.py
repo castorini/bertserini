@@ -17,7 +17,6 @@ if __name__ == "__main__":
     while True:
         print("Please input your question[use empty line to exit]:")
         question = input()
-        print(question)
         if len(question.strip()) == 0:
             break
         if args.chinese:
