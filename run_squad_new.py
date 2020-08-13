@@ -44,7 +44,7 @@ from transformers.data.metrics.squad_metrics import (
     compute_predictions_logits,
     squad_evaluate,
 )
-from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor, SquadExample
+from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor, #SquadExample
 
 
 try:
@@ -52,7 +52,7 @@ try:
 except ImportError:
     from tensorboardX import SummaryWriter
 
-from utils_squad_new import compute_predictions_log_probs, compute_predictions_logits
+from utils_squad_new import compute_predictions_log_probs, compute_predictions_logits, SquadExample
 # from args import *
 
 logger = logging.getLogger(__name__)
@@ -402,7 +402,7 @@ def evaluate(args, model, tokenizer, prefix=""):
     return results
 
 
-def create_inference_examples(query, paragraphs, paragraph_scores):
+def create_inference_examples(query, paragraphs, paragraph_scores, chinese=False, tokenizer=None):
     examples = []
     for (id, paragraph) in enumerate(paragraphs):
         example = MySquadExample(
@@ -414,7 +414,9 @@ def create_inference_examples(query, paragraphs, paragraph_scores):
             title="",
             is_impossible=False,
             answers=[],
-            paragraph_score=paragraph_scores[id]
+            paragraph_score=paragraph_scores[id],
+            chinese=chinese,
+            tokenizer=tokenizer,
         )
         id += 1
         examples.append(example)
@@ -500,7 +502,9 @@ class MySquadExample(SquadExample):
         title,
         answers=[],
         is_impossible=False,
-        paragraph_score=0):
+        paragraph_score=0,
+        chinese=False,
+        tokenizer=None):
 
         super(MySquadExample, self).__init__(
             qas_id,
@@ -510,7 +514,10 @@ class MySquadExample(SquadExample):
             start_position_character,
             title,
             answers,
-            is_impossible)
+            is_impossible,
+            chinese,
+            tokenizer,
+        )
         self.paragraph_score = paragraph_score
 
 
@@ -542,7 +549,12 @@ class BertReader:
 
         # processor = SquadV2Processor() if self.args.version_2_with_negative else SquadV1Processor()
         # todo convert to single query examples
-        examples = create_inference_examples(question, paragraph_texts, paragraph_scores)
+        examples = create_inference_examples(
+            question,
+            paragraph_texts,
+            paragraph_scores,
+            chinese=self.args.chinese,
+            tokenizer=self.tokenizer)
 
         features, dataset = squad_convert_examples_to_features(
             examples=examples,
