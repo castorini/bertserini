@@ -11,6 +11,6 @@ python ./search.py \
     --doc_stride 128 \
     --predict_file $SQUAD_DIR/cmrc_dev_to_squad.json \
     --eval_batch_size=32 \
-    --output_fn test_inference_cmrc_base.json \
+    --output_fn test_inference_cmrc.json \
     --output_dir tmp/cmrc_base \
     --chinese

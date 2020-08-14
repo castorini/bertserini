@@ -19,7 +19,7 @@ if __name__ == "__main__":
         search paragraph using Anserini (Top 1)
         extract phrase using Bert (SQuAD1.0 pretrained version)
     """
-    logger = init_logger("bert_search")
+    #logger = init_logger("bert_search")
 
     QAs = convert_squad_to_list(args.predict_file)
 
@@ -65,8 +65,8 @@ if __name__ == "__main__":
 
     json.dump(all_results, open(args.output_fn, 'w'))
 
-    logger.info("=======================================")
-    logger.info("count_total {} count_hit {}".format(count_total, count_hit))
+    #logger.info("=======================================")
+    #logger.info("count_total {} count_hit {}".format(count_total, count_hit))
     json.dump([count_total, count_hit], open("count_{}.json".format(args.output_fn), "w"))
-    logger.info("=======================================")
+    #logger.info("=======================================")
 

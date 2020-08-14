@@ -38,7 +38,7 @@ def get_score_with_results(eval_data, predictions, mu, dataset):
             weighted_score,
             1 - mu, mu)
 
-        answers[id_] = best_answer['answer']
+        answers[id_] = best_answer['answer'].replace("##", "")
 
         score[id_] = best_answer["total_score"]
 
