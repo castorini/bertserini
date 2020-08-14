@@ -1,4 +1,4 @@
-DIR=./results
+DIR=./results/bert_base_squad
 FILE=test_inference.json
 DATA_PATH=/data/yqxie/00_data/squad_v1.1/dev-v1.1.json
 

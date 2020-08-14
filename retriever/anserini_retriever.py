@@ -9,7 +9,7 @@ JString = autoclass('java.lang.String')
 JSearcher = autoclass('io.anserini.search.SimpleSearcher')
 
 from utils import init_logger, strip_accents, normalize_text
-logger = init_logger("anserini_retriever")
+#logger = init_logger("anserini_retriever")
 
 def build_searcher(k1=0.9, b=0.4, index_path="index/lucene-index.wiki_paragraph_drqa.pos+docvectors", segmented=False, rm3=False, chinese=False):
     searcher = JSearcher(JString(index_path))
@@ -25,9 +25,10 @@ def build_searcher(k1=0.9, b=0.4, index_path="index/lucene-index.wiki_paragraph_
 def anserini_retriever(question, searcher, para_num=20, tag=""):
     try:
         #hits = searcher.search(JString(question), para_num, JString(tag))
-        hits = searcher.search(JString(question), para_num)
+        hits = searcher.search(JString(question.encode("utf-8")), para_num)
     except ValueError as e:
-        logger.error("Search failure: {}, {}".format(question, e))
+        #logger.error("Search failure: {}, {}".format(question, e))
+        print("Search failure: {}, {}".format(question, e))
         return []
 
     paragraphs = []

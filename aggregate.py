@@ -12,8 +12,8 @@ from utils import choose_best_answer, weighted_score, normalize_answer, normaliz
 
 from eval.evaluate_v1 import squad_v1_eval as squad_evaluation
 #from eval.trivia_eval import evaluation as trivia_evaluation
-#from eval.evaluate_v1_drcd import evaluation as drcd_evaluation
-#from eval.evaluate_v1_cmrc import evaluate as cmrc_evaluation
+from eval.evaluate_v1_drcd import evaluation as drcd_evaluation
+from eval.evaluate_v1_cmrc import evaluate as cmrc_evaluation
 #from eval.evaluate_v1_special import evaluation as special_evaluation
 
 def get_score_with_results(eval_data, predictions, mu, dataset):
@@ -38,7 +38,7 @@ def get_score_with_results(eval_data, predictions, mu, dataset):
             weighted_score,
             1 - mu, mu)
 
-        answers[id_] = best_answer['answer']
+        answers[id_] = best_answer['answer'].replace("##", "")
 
         score[id_] = best_answer["total_score"]
 

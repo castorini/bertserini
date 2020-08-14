@@ -26,6 +26,7 @@ parser.add_argument("--eval_batch_size", default=8, type=int,
 parser.add_argument("--no_cuda", action='store_true',
                     help="Whether not to use CUDA when available")
 parser.add_argument('--chinese', action='store_true', help="Chinese")
+parser.add_argument('--toSimplified', action='store_true', help="to simplified chinese")
 parser.add_argument('--k1', type=float, default=0.9,
                     help='bm25 parameter')
 parser.add_argument('--b', type=float, default=0.4,

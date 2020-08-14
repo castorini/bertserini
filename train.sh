@@ -2,7 +2,7 @@ SQUAD_DIR=/data/yqxie/00_data/squad_v1.1
 
 python run_squad_new.py \
   --model_type bert \
-  --model_name_or_path bert-large-uncased-whole-word-masking-finetuned-squad \
+  --model_name_or_path bert-base-uncased \
   --do_train \
   --do_lower_case \
   --train_file $SQUAD_DIR/train-v1.1.json \
@@ -12,5 +12,5 @@ python run_squad_new.py \
   --num_train_epochs 2.0 \
   --max_seq_length 384 \
   --doc_stride 128 \
-  --output_dir ./tmp/debug_squad/
+  --output_dir ./tmp/debug_bert_base/
 
