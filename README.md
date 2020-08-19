@@ -43,7 +43,7 @@ We have indexed the 20180701 Wikipedia dump used in DrQA with Anserini; you can 
 ```
 wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip
 ````
-For the chinese index, please download throug:
+For the chinese index, please download through:
 ```
 wget ftp://72.143.107.253/BERTserini/chinese_wiki_2018_index.zip
 ```
