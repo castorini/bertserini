@@ -41,9 +41,14 @@ Please refer to their project [Pyserini](https://github.com/castorini/pyserini) 
 
 We have indexed the 20180701 Wikipedia dump used in DrQA with Anserini; you can download the prepared index here:
 ```
-wget ftp://72.143.107.253/BERTserini/index.zip
+wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip
 ````
-index.zip contains the indexed latest Wikipedia dump with Anserini.
+For the chinese index, please download throug:
+```
+wget ftp://72.143.107.253/BERTserini/chinese_wiki_2018_index.zip
+```
+```*index.zip``` contains the indexed latest Wikipedia dump with Anserini.
+
 After unzipping these files, put them under the root path of this repo, and then you are ready to go.
 Take the following folder structure as an example:
 ```
@@ -125,6 +130,14 @@ This script will first automatically select the parameter to aggregate paragraph
 ## rsvp-ai/bertserini-bert-base-cmrc, this is bert-base-chinese finetuned on the chinese reading comprehension dataset(CMRC)
 (0.5, {'f1_score': 68.0033167812909, 'exact_match': 51.164958061509786, 'total_count': 3219, 'skip_count': 1})
 ```
+
+## Notes
+
+We also provide the code to run with Anseirni's indexing version.
+You can download the ```.jar``` files through ```wget ftp://72.143.107.253/BERTserini/lib.zip```
+And swithch to Anserini code provided in ./retriever/anserini_retriever.py #TODO: swithch to argument setting
+Or you can look into [Anserini]'s repo and modify and compile the code for you own needs.
+This requires you to have java installed.
 
 ## Citation
 
