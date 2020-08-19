@@ -62,7 +62,8 @@ We have uploaded the finetuned checkpoints to the huggingface models: \
 
 To run our finetuned model, just set ```--model_name_or_path rsvp-ai/bertserini-bert-base-squad``` or ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad```.
 
-We will also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. 
+We also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. 
+Enable ```-chinese``` flag to switch to Chinese, please refer to ```train_cmrc.sh, inference_cmrc.sh``` for reference.
 
 ## Start the Demo
 
@@ -121,7 +122,8 @@ This script will first automatically select the parameter to aggregate paragraph
 ## rsvp-ai/bertserini-bert-base-squad, this is finetuned based on bert-base-uncased
 (0.5, {'exact_match': 39.89593188268685, 'f1': 47.58710784120026, 'recall': 49.27586877280707, 'precision': 48.10849111109448, 'cover': 45.31693472090823, 'overlap': 56.00756859035005})
 ```
-
+## rsvp-ai/bertserini-bert-base-cmrc, this is bert-base-chinese finetuned on the chinese reading comprehension dataset(CMRC)
+(0.5, {'f1_score': 68.0033167812909, 'exact_match': 51.164958061509786, 'total_count': 3219, 'skip_count': 1})
 
 ## Citation
 
