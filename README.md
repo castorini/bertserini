@@ -133,11 +133,11 @@ This script will first automatically select the parameter to aggregate paragraph
 
 ## Notes
 
-We also provide the code to run with Anseirni's indexing version.
-You can download the ```.jar``` files through ```wget ftp://72.143.107.253/BERTserini/lib.zip```
-And swithch to Anserini code provided in ./retriever/anserini_retriever.py #TODO: swithch to argument setting
-Or you can look into [Anserini]'s repo and modify and compile the code for you own needs.
-This requires you to have java installed.
+We also provide the code to run with Anseirni's indexing version. \
+This requires .jar files from compiled [Anserini](https://github.com/castorini/anserini). \
+You can look into Anserini's repo and modify the code for you own needs. \
+And then swithch to the API connecting Anserini provided in ./retriever/anserini_retriever.py #TODO: swithch to argument setting
+
 
 ## Citation
 
