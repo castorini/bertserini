@@ -4,7 +4,7 @@ python ./interactive.py \
     --para_num 10 \
     --index_path index/lucene-index.enwiki-20180701-paragraphs \
     --model_type bert \
-    --model_name_or_path ./tmp/bert_base_squad/bertserini-bert-base-squad \
+    --model_name_or_path rsvp-ai/bertserini-bert-base-squad \
     --do_eval \
     --do_lower_case \
     --max_seq_length 384 \

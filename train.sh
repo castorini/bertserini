@@ -1,6 +1,6 @@
 SQUAD_DIR=/data/yqxie/00_data/squad_v1.1
 
-python run_squad_new.py \
+python run_squad.py \
   --model_type bert \
   --model_name_or_path bert-base-uncased \
   --do_train \
@@ -12,5 +12,5 @@ python run_squad_new.py \
   --num_train_epochs 2.0 \
   --max_seq_length 384 \
   --doc_stride 128 \
-  --output_dir ./tmp/debug_bert_base/
+  --output_dir ./tmp/bert_base_squad/
 

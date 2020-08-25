@@ -31,6 +31,7 @@ pip install pyserini
 pip install transformers 
 pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html # or install torch according to your cuda version
 pip install tensorboardX
+pip install hanziconv # for chinese processing
 ```
 
 NOTE: Pyserini is the Python wrapper for Anserini. 
@@ -41,9 +42,14 @@ Please refer to their project [Pyserini](https://github.com/castorini/pyserini) 
 
 We have indexed the 20180701 Wikipedia dump used in DrQA with Anserini; you can download the prepared index here:
 ```
-wget ftp://72.143.107.253/BERTserini/index.zip
+wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip
 ````
-index.zip contains the indexed latest Wikipedia dump with Anserini.
+For the chinese index, please download through:
+```
+wget ftp://72.143.107.253/BERTserini/chinese_wiki_2018_index.zip
+```
+```*index.zip``` contains the indexed latest Wikipedia dump with Anserini.
+
 After unzipping these files, put them under the root path of this repo, and then you are ready to go.
 Take the following folder structure as an example:
 ```
@@ -58,11 +64,13 @@ bertserini
 
 We have uploaded the finetuned checkpoints to the huggingface models: \
 [bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
-[bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad) 
+[bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad) \
+[bertserini-bert-base-cmrc](https://huggingface.co/rsvp-ai/bertserini-bert-base-cmrc) # this is for Chinese \
+[bertserini-roberta-base](https://huggingface.co/rsvp-ai/bertserini-roberta-base)
 
-To run our finetuned model, just set ```--model_name_or_path rsvp-ai/bertserini-bert-base-squad``` or ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad```.
+To run our finetuned model, just set ```--model_name_or_path rsvp-ai/<MODEL_NAME>``` for example: ```--model_name_or_path rsvp-ai/bertserini-bert-large-squad```.
 
-We will also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. 
+We also provide the Chinese version of this pipeline on [CMRC](https://github.com/ymcui/cmrc2018) and [DRCD](https://github.com/DRCKnowledgeTeam/DRCD) datasets. 
 
 ## Start the Demo
 
@@ -70,6 +78,10 @@ To quickly try out the system, you should follow ```demo.sh``` to set the paths,
 ```
 bash demo.sh
 ``` 
+or
+```
+bash demo_cmrc.sh
+```
 You can try our fine-tuned model with the Wikipedia articles.
 
 # Training, inferencing and evaluating using your data
@@ -87,11 +99,20 @@ After getting the index, put it under the path ```bertserini/index/```
 wget https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json
 wget https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json
 ```
+
+For CMRC dataset, please refer to [CMRC](https://github.com/ymcui/cmrc2018).
+TODO: for DRCD dataset, which is in Traditional Chinese, we have implemented the to-simplified argment, however, the results has not been tested.
+
 ## Training
 Please set the correct parameters in the following script and then run.
 ```
 bash train.sh
 ```
+or, for chinese:
+```
+bash train_cmrc.sh
+```
+
 This script will run the training for BERT on the SQuAD dataset.
 It will generate checkpoints under ./tmp/ \
 You can also train the base model from other pre-trained models as long as it is already supporting Question Answering. 
@@ -103,6 +124,10 @@ We have upload the finetuned checkpoints to hugging face, you can directly use t
 Then run:
 ```
 bash inference.sh
+```
+or, for chinese:
+```
+inference_cmrc.sh #this added --chinese argments to switch to chinese example processing
 ```
 It will generate inference results on SQuAD, under the path of ./results/
 
@@ -120,7 +145,17 @@ This script will first automatically select the parameter to aggregate paragraph
 
 ## rsvp-ai/bertserini-bert-base-squad, this is finetuned based on bert-base-uncased
 (0.5, {'exact_match': 39.89593188268685, 'f1': 47.58710784120026, 'recall': 49.27586877280707, 'precision': 48.10849111109448, 'cover': 45.31693472090823, 'overlap': 56.00756859035005})
+
+## rsvp-ai/bertserini-bert-base-cmrc, this is bert-base-chinese finetuned on the chinese reading comprehension dataset(CMRC)
+(0.5, {'f1_score': 68.0033167812909, 'exact_match': 51.164958061509786, 'total_count': 3219, 'skip_count': 1})
 ```
+
+## Notes
+
+We also provide the code to run with Anseirni's indexing version. \
+This requires .jar files from compiled [Anserini](https://github.com/castorini/anserini). \
+You can look into Anserini's repo and modify the code for you own needs. \
+And then swithch to the API connecting Anserini provided in ./retriever/anserini_retriever.py #TODO: swithch to argument setting
 
 
 ## Citation
