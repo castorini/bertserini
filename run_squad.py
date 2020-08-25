@@ -52,7 +52,7 @@ try:
 except ImportError:
     from tensorboardX import SummaryWriter
 
-from utils_squad_new import compute_predictions_log_probs, compute_predictions_logits, SquadExample
+from utils_squad import compute_predictions_log_probs, compute_predictions_logits, SquadExample
 # from args import *
 
 logger = logging.getLogger(__name__)
