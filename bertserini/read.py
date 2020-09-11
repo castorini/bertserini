@@ -2,8 +2,8 @@ import json
 from tqdm import trange, tqdm
 
 from bert_reader import BertReader
-from args import *
-from utils import strip_accents
+from bertserini.args import *
+from bertserini.utils import strip_accents
 
 
 if __name__ == "__main__":

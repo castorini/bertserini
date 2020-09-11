@@ -3,11 +3,11 @@ import time
 import unicodedata
 
 from run_squad_new import BertReader
-from retriever.anserini_retriever import anserini_retriever, build_searcher
+from bertserini.retriever.anserini_retriever import anserini_retriever, build_searcher
 #from retriever.pyserini_retriever import anserini_retriever, build_searcher
-from utils import (convert_squad_to_list, normalize_text, strip_accents, choose_best_answer, weighted_score)
+from bertserini.utils import (convert_squad_to_list, normalize_text, strip_accents, choose_best_answer, weighted_score)
 
-from args import *
+from bertserini.args import *
 
 if __name__ == "__main__":
 

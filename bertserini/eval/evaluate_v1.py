@@ -5,7 +5,7 @@ import argparse
 import json
 import sys
 
-from utils import normalize_answer, init_logger
+from bertserini.utils import normalize_answer, init_logger
 
 logger = init_logger("evluation")
 

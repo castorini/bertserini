@@ -1,3 +1,10 @@
 cache*
 *.log
 *.json
+
+.idea/
+
+build/
+dist/
+
+bertserini.egg-info/

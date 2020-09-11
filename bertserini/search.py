@@ -5,12 +5,12 @@ from tqdm import trange, tqdm
 
 from hanziconv import HanziConv
 
-from run_squad import BertReader
+from bertserini.run_squad import BertReader
 #from retriever.anserini_retriever import anserini_retriever, build_searcher
-from retriever.pyserini_retriever import anserini_retriever, build_searcher
-from utils import (convert_squad_to_list, normalize_text, init_logger, strip_accents)
+from bertserini.retriever.pyserini_retriever import anserini_retriever, build_searcher
+from bertserini.utils import (convert_squad_to_list, normalize_text, init_logger, strip_accents)
 
-from args import *
+from bertserini.args import *
 
 if __name__ == "__main__":
     """
