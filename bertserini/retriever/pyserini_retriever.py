@@ -3,7 +3,7 @@ import numpy as np
 
 from pyserini.search import SimpleSearcher
 
-from utils import init_logger, strip_accents, normalize_text
+from bertserini.utils import init_logger, strip_accents, normalize_text
 logger = init_logger("anserini_retriever")
 
 def build_searcher(k1=0.9, b=0.4, index_path="index/lucene-index.wiki_paragraph_drqa.pos+docvectors", segmented=False, rm3=False, chinese=False):

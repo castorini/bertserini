@@ -1,0 +1,6 @@
+pyserini
+transformers
+torch
+torchvision
+tensorboardX
+hanziconv
