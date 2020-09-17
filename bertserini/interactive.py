@@ -1,11 +1,6 @@
-import json
-import time
-import unicodedata
-
-from run_squad_new import BertReader
-from bertserini.retriever.anserini_retriever import anserini_retriever, build_searcher
-#from retriever.pyserini_retriever import anserini_retriever, build_searcher
-from bertserini.utils import (convert_squad_to_list, normalize_text, strip_accents, choose_best_answer, weighted_score)
+from bertserini.bert_reader import BertReader
+from bertserini.pyserini_retriever import retriever, build_searcher
+from bertserini.utils import (choose_best_answer, weighted_score)
 
 from bertserini.args import *
 
@@ -20,9 +15,9 @@ if __name__ == "__main__":
         if len(question.strip()) == 0:
             break
         if args.chinese:
-            paragraphs = anserini_retriever(question.encode("utf-8"), ansrini_searcher, args.para_num)
+            paragraphs = retriever(question.encode("utf-8"), ansrini_searcher, args.para_num)
         else:
-            paragraphs = anserini_retriever(question, ansrini_searcher, args.para_num)
+            paragraphs = retriever(question, ansrini_searcher, args.para_num)
         if len(paragraphs) == 0:
             print("No related Wiki passage found")
         paragraph_texts = []

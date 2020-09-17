@@ -1,14 +1,12 @@
 import json
 import time
-import unicodedata
-from tqdm import trange, tqdm
+from tqdm import trange
 
 from hanziconv import HanziConv
 
-from bertserini.run_squad import BertReader
-#from retriever.anserini_retriever import anserini_retriever, build_searcher
-from bertserini.retriever.pyserini_retriever import anserini_retriever, build_searcher
-from bertserini.utils import (convert_squad_to_list, normalize_text, init_logger, strip_accents)
+from bertserini.bert_reader import BertReader
+from bertserini.pyserini_retriever import retriever, build_searcher
+from bertserini.utils import (convert_squad_to_list, normalize_text, strip_accents)
 
 from bertserini.args import *
 
@@ -37,9 +35,9 @@ if __name__ == "__main__":
         if args.chinese:
             if args.toSimplified:
                 question = HanziConv.toSimplified(question)
-            paragraphs = anserini_retriever(question, ansrini_searcher, args.para_num)
+            paragraphs = retriever(question, ansrini_searcher, args.para_num)
         else:
-            paragraphs = anserini_retriever(question, ansrini_searcher, args.para_num)
+            paragraphs = retriever(question, ansrini_searcher, args.para_num)
         if len(paragraphs) == 0:
             continue
         paragraph_texts = []

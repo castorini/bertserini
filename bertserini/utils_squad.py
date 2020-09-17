@@ -800,7 +800,7 @@ def compute_predictions_log_probs(
             else:
                 do_lower_case = tokenizer.do_lowercase_and_remove_accent
 
-            final_text = get_final_text(tok_text, orig_text, do_lower_case, tokenizer, chenese, verbose_logging)
+            final_text = get_final_text(tok_text, orig_text, do_lower_case, tokenizer, chinese, verbose_logging)
 
             if final_text in seen_predictions:
                 continue
