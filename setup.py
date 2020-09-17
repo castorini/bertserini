@@ -8,8 +8,13 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name='bertserini',
-    version='0.0.2',
-    packages=['bertserini', 'bertserini.reader', 'bertserini.retriever', 'bertserini.experiments', 'bertserini.utils'],
+    version='0.0.2-2',
+    packages=['bertserini',
+              'bertserini.reader',
+              'bertserini.retriever',
+              'bertserini.experiments',
+              'bertserini.utils',
+              'bertserini.train'],
     url='https://github.com/rsvp-ai/bertserini',
     license='',
     author='bertserini',

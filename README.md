@@ -76,6 +76,10 @@ We have evaluated our system on `SQuAD 1.1` and `CMRC2018` development set.
 Please see following documents for details:  
 - [SQuAD experiments](docs/experiments-squad.md)  
 - [CMRC experiments](docs/experiments-cmrc.md)
+
+## Training
+To finetune BERT on the SQuAD style dataset, please see [here](docs/train_squad.md) for details.
+
 ## Citation
 
 Please cite [the NAACL 2019 paper]((https://www.aclweb.org/anthology/N19-4013/)):
