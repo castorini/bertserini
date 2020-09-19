@@ -8,7 +8,7 @@ logger = init_logger("retriever")
 def build_searcher(index_path, k1=0.9, b=0.4, language="en"):
     searcher = SimpleSearcher(index_path)
     searcher.set_bm25(k1, b)
-    searcher.object.setLanguage(language=language)
+    searcher.object.setLanguage(language)
     return searcher
 
 
