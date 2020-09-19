@@ -10,7 +10,7 @@ if __name__ == "__main__":
     while True:
         print("Please input your question[use empty line to exit]:")
         question = Question(input())
-        contexts = retriever(question, searcher, 10)
+        contexts = retriever(question.text, searcher, 10)
         answers = bert_reader.predict(question, contexts)
         for ans in answers:
             ans.aggregate_score(0.45)
