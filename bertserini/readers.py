@@ -102,7 +102,7 @@ class BERT(Reader):
 
         all_answers = []
         for idx, ans in enumerate(answers):
-            all_results.append(Answer(
+            all_answers.append(Answer(
                 text=answers[ans][0],
                 score=answers[ans][1],
                 ctx_score=contexts[idx].score,
