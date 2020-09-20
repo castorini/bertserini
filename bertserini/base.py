@@ -1,10 +1,7 @@
 from typing import List, Union, Optional, Mapping, Any
 import abc
 
-from pyserini.search import JSimpleSearcherResult
-
-
-__all__ = ['Question', 'Context', 'Reader', 'Answer', 'hits_to_contexts', 'TextType']
+__all__ = ['Question', 'Context', 'Reader', 'Answer', 'TextType']
 
 
 TextType = Union['Question', 'Context', 'Answer']
@@ -94,7 +91,6 @@ class Answer:
         self.total_score = weight*self.score + (1-weight)*self.ctx_score
 
 
-
 class Reader:
     """
     Class representing a Reader.
@@ -116,32 +112,3 @@ class Reader:
                 Predicted list of answer.
         """
         pass
-
-
-def hits_to_contexts(hits: List[JSimpleSearcherResult], language="en", field='raw', blacklist=[]) -> List[Context]:
-    """
-        Converts hits from Pyserini into a list of texts.
-        Parameters
-        ----------
-        hits : List[JSimpleSearcherResult]
-            The hits.
-        field : str
-            Field to use.
-        language : str
-            Language of corpus
-        blacklist : List[str]
-            strings that should not contained
-        Returns
-        -------
-        List[Text]
-            List of texts.
-     """
-    contexts = []
-    for i in range(0, len(hits)):
-        t = hits[i].raw if field == 'raw' else hits[i].contents
-        for s in blacklist:
-            if s in t:
-                continue
-        metadata = {'raw': hits[i].raw, 'docid': hits[i].docid}
-        contexts.append(Context(t, language, metadata, hits[i].score))
-    return contexts

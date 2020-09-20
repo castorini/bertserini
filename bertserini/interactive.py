@@ -1,6 +1,7 @@
 from .base import Question
 from .readers import BERT
 from .pyserini_retriever import retriever, build_searcher
+from .utils_new import get_best_answer
 
 if __name__ == "__main__":
 
@@ -11,11 +12,9 @@ if __name__ == "__main__":
         print("Please input your question[use empty line to exit]:")
         question = Question(input(), "zh")
         contexts = retriever(question, searcher, 10)
-        answers = bert_reader.predict(question, contexts)
-        for ans in answers:
-            ans.aggregate_score(0.45)
-        answers.sort(key=lambda x: x.total_score, reverse=True)
-        print(answers[0].text)
+        candidates = bert_reader.predict(question, contexts)
+        answer = get_best_answer(candidates, 0.45)
+        print(answer.text)
 
 
 

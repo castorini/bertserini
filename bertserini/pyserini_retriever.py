@@ -1,6 +1,8 @@
-from pyserini.search import SimpleSearcher
+from typing import List
+
+from pyserini.search import SimpleSearcher, JSimpleSearcherResult
 from .utils import init_logger
-from .base import hits_to_contexts
+from .base import Context
 
 logger = init_logger("retriever")
 
@@ -23,3 +25,32 @@ def retriever(question, searcher, para_num=20):
         logger.error("Search failure: {}, {}".format(question.text, e))
         return []
     return hits_to_contexts(hits, language)
+
+
+def hits_to_contexts(hits: List[JSimpleSearcherResult], language="en", field='raw', blacklist=[]) -> List[Context]:
+    """
+        Converts hits from Pyserini into a list of texts.
+        Parameters
+        ----------
+        hits : List[JSimpleSearcherResult]
+            The hits.
+        field : str
+            Field to use.
+        language : str
+            Language of corpus
+        blacklist : List[str]
+            strings that should not contained
+        Returns
+        -------
+        List[Text]
+            List of texts.
+     """
+    contexts = []
+    for i in range(0, len(hits)):
+        t = hits[i].raw if field == 'raw' else hits[i].contents
+        for s in blacklist:
+            if s in t:
+                continue
+        metadata = {'raw': hits[i].raw, 'docid': hits[i].docid}
+        contexts.append(Context(t, language, metadata, hits[i].score))
+    return contexts
