@@ -118,7 +118,7 @@ class Reader:
         pass
 
 
-def hits_to_contexts(hits: List[JSimpleSearcherResult], field='raw', language="en", blacklist=[]) -> List[Context]:
+def hits_to_contexts(hits: List[JSimpleSearcherResult], language="en", field='raw', blacklist=[]) -> List[Context]:
     """
         Converts hits from Pyserini into a list of texts.
         Parameters

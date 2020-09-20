@@ -13,27 +13,13 @@ def build_searcher(index_path, k1=0.9, b=0.4, language="en"):
 
 
 def retriever(question, searcher, para_num=20):
+    language = question.language
     try:
-        hits = searcher.search(question, k=para_num)
-    except ValueError as e:
-        logger.error("Search failure: {}, {}".format(question, e))
-        return []
-
-    """
-    paragraphs = []
-    for hit in hits:
-        doc_id = hit.docid
-        score = hit.score
-        text = hit.raw
-
-        if ("||" in text) or ("/><" in text) or \
-           ("|----|" in text) or ("#fffff" in text):
-            continue
+        if language == "zh":
+            hits = searcher.search(question.text.encode("utf-8"), k=para_num)
         else:
-            paragraph_dict = {'text': text,
-                              'paragraph_score': score,
-                              'docid': doc_id}
-            paragraphs.append(paragraph_dict)
-            """
-
-    return hits_to_contexts(hits)
+            hits = searcher.search(question.text, k=para_num)
+    except ValueError as e:
+        logger.error("Search failure: {}, {}".format(question.text, e))
+        return []
+    return hits_to_contexts(hits, language)
