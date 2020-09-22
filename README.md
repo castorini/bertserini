@@ -10,14 +10,6 @@ We demonstrate an end-to-end Open-Domain question answering system that integrat
 
 Following the Open Domain QA setting of DrQA, we are using Wikipedia as the large scale knowledge source of documents. The system first retrieves several candidate text segmentations among the entire knowledge source of documents, then read through the candidate text segments to determine the answers.
 
-# Quick Start
-
-1. [Install dependencies](#package-installation)
-2. [Download the PreBuilt Wikipedia index](#download-prebuilt-wikipedia-index)
-3. [Download the pretrained models](#download-the-pretrained-models)
-4. [Quickly start the Demo](#start-the-demo)
-
-
 ## Package Installation
 ```
 pip install bertserini
