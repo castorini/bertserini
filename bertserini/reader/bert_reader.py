@@ -5,13 +5,13 @@ from torch.utils.data import DataLoader, SequentialSampler
 import torch
 from transformers.data.processors.squad import SquadResult
 
-from .base import Reader, Question, Context, Answer
+from bertserini.reader.base import Reader, Question, Context, Answer
 
 __all__ = ['BERT']
 
-from .run_squad import to_list
+from bertserini.run_squad import to_list
 
-from .utils_squad import SquadExample, compute_predictions_logits
+from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
 
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:

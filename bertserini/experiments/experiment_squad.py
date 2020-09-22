@@ -1,14 +1,14 @@
 import json
 from tqdm import tqdm
-from .readers import BERT
-from .pyserini_retriever import retriever, build_searcher
-from .utils_new import extract_squad_questions
+from bertserini.reader.bert_reader import BERT
+from bertserini.retriever.pyserini_retriever import retriever, build_searcher
+from bertserini.utils.utils_new import extract_squad_questions
 
 if __name__ == "__main__":
 
-    questions = extract_squad_questions("data/cmrc_dev_squad.json")
-    bert_reader = BERT("rsvp-ai/bertserini-bert-base-cmrc", "rsvp-ai/bertserini-bert-base-cmrc")
-    searcher = build_searcher("index/lucene-index.wiki_zh_paragraph_with_title_0.6.0.pos+docvectors", language="zh")
+    questions = extract_squad_questions("data/dev-v1.1.json")
+    bert_reader = BERT("rsvp-ai/bertserini-bert-base-squad", "rsvp-ai/bertserini-bert-base-squad")
+    searcher = build_searcher("index/lucene-index.enwiki-20180701-paragraphs")
 
     all_answer = []
     for question in tqdm(questions):
@@ -24,4 +24,5 @@ if __name__ == "__main__":
                  }
             )
         all_answer.append(final_answers_lst)
-    json.dump(all_answer, open("result_cmrc.json", 'w'), indent=4)
+    json.dump(all_answer, open("result_bert_base.json", 'w'), indent=4)
+

@@ -2,11 +2,11 @@ import json
 import argparse
 import numpy as np
 
-from bertserini.utils import choose_best_answer, weighted_score, normalize_answer, normalize_text, get_type
+from bertserini.utils.utils import choose_best_answer, weighted_score
 
-from bertserini.eval.evaluate_v1 import squad_v1_eval as squad_evaluation
-from bertserini.eval.evaluate_v1_drcd import evaluation as drcd_evaluation
-from bertserini.eval.evaluate_v1_cmrc import evaluate as cmrc_evaluation
+from bertserini.experiments.eval.evaluate_v1 import squad_v1_eval as squad_evaluation
+from bertserini.experiments.eval.evaluate_v1_drcd import evaluation as drcd_evaluation
+from bertserini.experiments.eval.evaluate_v1_cmrc import evaluate as cmrc_evaluation
 
 
 def get_score_with_results(eval_data, predictions, mu, dataset):
@@ -46,12 +46,8 @@ def get_score_with_results(eval_data, predictions, mu, dataset):
                         "exact_match": eval_result[1],
                         "total_count": eval_result[2],
                         "skip_count": eval_result[3]}
-    elif args.dataset == "trivia":
-        eval_result = trivia_evaluation(eval_data, "tmp.answer")
     elif args.dataset == "drcd":
         eval_result = drcd_evaluation(eval_data, "tmp.answer")
-    elif args.dataset == "special":
-        eval_result = special_evaluation(eval_data, "tmp.answer")
     else:
         eval_result = squad_evaluation(eval_data, "tmp.answer")
 

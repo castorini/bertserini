@@ -3,9 +3,8 @@ from __future__ import print_function
 from collections import Counter
 import argparse
 import json
-import sys
 
-from bertserini.utils import normalize_answer, init_logger
+from bertserini.utils.utils import normalize_answer, init_logger
 
 logger = init_logger("evluation")
 

@@ -1,5 +1,5 @@
 import json
-from .base import Question, Answer
+from bertserini.reader.base import Question
 
 
 def get_best_answer(candidates, weight=0.5):

@@ -1,8 +1,8 @@
 from typing import List
 
 from pyserini.search import SimpleSearcher, JSimpleSearcherResult
-from .utils import init_logger
-from .base import Context
+from bertserini.utils.utils import init_logger
+from bertserini.reader.base import Context
 
 logger = init_logger("retriever")
 

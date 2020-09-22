@@ -1,7 +1,7 @@
-from .base import Question
-from .readers import BERT
-from .pyserini_retriever import retriever, build_searcher
-from .utils_new import get_best_answer
+from bertserini.reader.base import Question
+from bertserini.reader.bert_reader import BERT
+from bertserini.retriever.pyserini_retriever import retriever, build_searcher
+from bertserini.utils.utils_new import get_best_answer
 
 if __name__ == "__main__":
 
