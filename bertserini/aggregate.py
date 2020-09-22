@@ -1,20 +1,13 @@
 import json
 import argparse
-import os, time, random
-
-# import matplotlib.pyplot as plt
-# from matplotlib.ticker import MultipleLocator
-from tqdm import trange
-from tqdm import tqdm
 import numpy as np
 
 from bertserini.utils import choose_best_answer, weighted_score, normalize_answer, normalize_text, get_type
 
 from bertserini.eval.evaluate_v1 import squad_v1_eval as squad_evaluation
-#from eval.trivia_eval import evaluation as trivia_evaluation
 from bertserini.eval.evaluate_v1_drcd import evaluation as drcd_evaluation
 from bertserini.eval.evaluate_v1_cmrc import evaluate as cmrc_evaluation
-#from eval.evaluate_v1_special import evaluation as special_evaluation
+
 
 def get_score_with_results(eval_data, predictions, mu, dataset):
     answers = {}
@@ -64,6 +57,7 @@ def get_score_with_results(eval_data, predictions, mu, dataset):
 
     print("mu:{}, result:{}".format(mu, eval_result))
     return eval_result, answers
+
 
 def get_best_mu_with_scores(eval_data, predictions, mu_range, dataset, output_path):
     score_test = {}

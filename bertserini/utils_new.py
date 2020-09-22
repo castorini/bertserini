@@ -8,7 +8,7 @@ def get_best_answer(candidates, weight=0.5):
     return candidates.sorted(key=lambda x: x.total_score, reverse=True)[0]
 
 
-def extract_squad_questions(squad_filename):
+def extract_squad_questions(squad_filename, language="en"):
     data = json.load(open(squad_filename, 'r'))
     data = data["data"]
     questions = []
@@ -17,6 +17,6 @@ def extract_squad_questions(squad_filename):
             for qa in paragraph["qas"]:
                 id_ = qa["id"]
                 question = qa["question"]
-                questions.append(Question(question, id_))
+                questions.append(Question(question, id_, language))
     return questions
 
