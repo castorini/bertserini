@@ -3,16 +3,16 @@ from tqdm import tqdm
 from bertserini.reader.bert_reader import BERT
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
 from bertserini.utils.utils_new import extract_squad_questions
+from bertserini.experiments.args import *
 
 if __name__ == "__main__":
-
-    questions = extract_squad_questions("data/dev-v1.1.json")
-    bert_reader = BERT("rsvp-ai/bertserini-bert-base-squad", "rsvp-ai/bertserini-bert-base-squad")
-    searcher = build_searcher("index/lucene-index.enwiki-20180701-paragraphs")
+    questions = extract_squad_questions(args.dataset_path)
+    bert_reader = BERT(args.model_name_or_path, args.tokenizer_name)
+    searcher = build_searcher(args.index_path, language=args.language)
 
     all_answer = []
     for question in tqdm(questions):
-        contexts = retriever(question, searcher, 10)
+        contexts = retriever(question, searcher, args.topk)
         final_answers = bert_reader.predict(question, contexts)
         final_answers_lst = []
         for ans in final_answers:
@@ -24,5 +24,5 @@ if __name__ == "__main__":
                  }
             )
         all_answer.append(final_answers_lst)
-    json.dump(all_answer, open("result_bert_base.json", 'w'), indent=4)
+    json.dump(all_answer, open(args.output, 'w'), indent=4)
 
