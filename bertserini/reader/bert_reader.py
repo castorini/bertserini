@@ -9,7 +9,7 @@ from bertserini.reader.base import Reader, Question, Context, Answer
 
 __all__ = ['BERT']
 
-from bertserini.run_squad import to_list
+from bertserini.train.run_squad import to_list
 
 from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
 

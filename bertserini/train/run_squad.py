@@ -52,8 +52,6 @@ try:
 except ImportError:
     from tensorboardX import SummaryWriter
 
-# from args import *
-
 logger = logging.getLogger(__name__)
 
 MODEL_CONFIG_CLASSES = list(MODEL_FOR_QUESTION_ANSWERING_MAPPING.keys())
