@@ -1,3 +1,5 @@
+tqdm
+numpy
 pyserini
 transformers
 torch
