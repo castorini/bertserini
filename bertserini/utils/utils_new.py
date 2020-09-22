@@ -1,4 +1,5 @@
 import json
+from hanziconv import HanziConv
 from bertserini.reader.base import Question
 
 
@@ -17,6 +18,8 @@ def extract_squad_questions(squad_filename, language="en"):
             for qa in paragraph["qas"]:
                 id_ = qa["id"]
                 question = qa["question"]
+                if language == "zh":
+                    HanziConv.toSimplified(question)
                 questions.append(Question(question, id_, language))
     return questions
 
