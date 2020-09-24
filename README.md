@@ -27,6 +27,9 @@ Please refer to their project [Pyserini](https://github.com/castorini/pyserini) 
 
 
 ## A Simple Question-Answer Example
+We provided an online interface to simply play with english QA [here](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad?text=Where+do+I+live%3F&context=My+name+is+Sarah+and+I+live+in+London)
+
+Below is a example for English Question-Answering. We also provide an example for Chinese Question-Answering [here]().
 ```python
 from bertserini.reader.base import Question, Context
 from bertserini.reader.bert_reader import BERT
@@ -53,8 +56,20 @@ contexts = [Context('The "Gilded Age" was a term that Mark Twain used to describ
 candidates = bert_reader.predict(question, contexts)
 answer = get_best_answer(candidates, 0.45)
 print(answer.text)
-
 ```
+
+NOTE:
+
+ The index we used above is English Wikipedia, which could be download via:
+```
+wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip
+```
+
+After unzipping these file, we suggest you putting it in `indexes/`.
+
+We have uploaded following finetuned checkpoints to the huggingace models:\
+[bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
+[bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad)
 
 ## Citation
 
