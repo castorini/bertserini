@@ -29,7 +29,7 @@ Please refer to their project [Pyserini](https://github.com/castorini/pyserini) 
 ## A Simple Question-Answer Example
 We provided an online interface to simply play with english QA [here](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad?text=Where+do+I+live%3F&context=My+name+is+Sarah+and+I+live+in+London)
 
-Below is a example for English Question-Answering. We also provide an example for Chinese Question-Answering [here]().
+Below is a example for English Question-Answering. We also provide an example for Chinese Question-Answering [here](docs/qa_example_zh.md).
 ```python
 from bertserini.reader.base import Question, Context
 from bertserini.reader.bert_reader import BERT
@@ -44,7 +44,7 @@ question = Question("Why did Mark Twain call the 19th century the glied age?")
 
 # Option 1: fetch some contexts from Wikipedia with Pyserini
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
-searcher = build_searcher("/path/to/enwiki/index/")
+searcher = build_searcher("indexes/lucene-index.enwiki-20180701-paragraphs")
 contexts = retriever(question, searcher, 10)
 
 # Option 2: hard-coded contexts
@@ -68,9 +68,14 @@ wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip
 After unzipping these file, we suggest you putting it in `indexes/`.
 
 We have uploaded following finetuned checkpoints to the huggingace models:\
-[bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad) \
-[bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad)
+- [bertserini-bert-base-squad](https://huggingface.co/rsvp-ai/bertserini-bert-base-squad)
+- [bertserini-bert-large-squad](https://huggingface.co/rsvp-ai/bertserini-bert-large-squad)
 
+## Experiments
+We have evaluated our system on `SQuAD 1.1` and `CMRC2018` development set.
+Please see following documents for details:  
+- [SQuAD experiments](docs/experiments-squad.md)  
+- [CMRC experiments](docs/experiments-cmrc.md)
 ## Citation
 
 Please cite [the NAACL 2019 paper]((https://www.aclweb.org/anthology/N19-4013/)):
