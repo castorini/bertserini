@@ -9,11 +9,11 @@ with open('requirements.txt') as f:
 setuptools.setup(
     name='bertserini',
     version='0.0.1',
-    packages=['bertserini', 'bertserini.eval', 'bertserini.retriever'],
+    packages=['bertserini', 'bertserini.reader', 'bertserini.retriever', 'bertserini.experiments', 'bertserini.utils'],
     url='https://github.com/rsvp-ai/bertserini',
     license='',
     author='bertserini',
-    author_email='x93ma@uwaterloo.ca',
+    author_email='yuqing.xie@uwaterloo.ca',
     description='An end-to-end Open-Domain question answering system',
     install_requires=requirements,
     classifiers=[
