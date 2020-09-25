@@ -1,37 +1,56 @@
-import os
-import numpy as np
+from typing import List
 
-from pyserini.search import SimpleSearcher
+from pyserini.search import SimpleSearcher, JSimpleSearcherResult
+from bertserini.utils.utils import init_logger
+from bertserini.reader.base import Context
 
-from bertserini.utils import init_logger, strip_accents, normalize_text
-logger = init_logger("anserini_retriever")
+logger = init_logger("retriever")
 
-def build_searcher(k1=0.9, b=0.4, index_path="index/lucene-index.wiki_paragraph_drqa.pos+docvectors", segmented=False, rm3=False, chinese=False):
+
+def build_searcher(index_path, k1=0.9, b=0.4, language="en"):
     searcher = SimpleSearcher(index_path)
     searcher.set_bm25(k1, b)
-    if chinese:
-        searcher.object.setLanguage("zh")
-        print("########### we are usinig Chinese retriever ##########")
+    searcher.object.setLanguage(language)
     return searcher
 
-def anserini_retriever(question, searcher, para_num=20, tag=""):
+
+def retriever(question, searcher, para_num=20):
+    language = question.language
     try:
-        hits = searcher.search(question, k=para_num)
-    except ValueError as e:
-        logger.error("Search failure: {}, {}".format(question, e))
-        return []
-
-    paragraphs = []
-
-    for paragraph in hits:
-        if ("||" in paragraph.raw) or ("/><" in paragraph.raw) or \
-           ("|----|" in paragraph.raw) or ("#fffff" in paragraph.raw):
-            continue
+        if language == "zh":
+            hits = searcher.search(question.text.encode("utf-8"), k=para_num)
         else:
-            paragraph_dict = {'text': paragraph.raw,
-                              'paragraph_score': paragraph.score,
-                              'docid': paragraph.docid}
-                              #"tag": paragraph.tag}
-            paragraphs.append(paragraph_dict)
+            hits = searcher.search(question.text, k=para_num)
+    except ValueError as e:
+        logger.error("Search failure: {}, {}".format(question.text, e))
+        return []
+    return hits_to_contexts(hits, language)
 
-    return paragraphs
+
+def hits_to_contexts(hits: List[JSimpleSearcherResult], language="en", field='raw', blacklist=[]) -> List[Context]:
+    """
+        Converts hits from Pyserini into a list of texts.
+        Parameters
+        ----------
+        hits : List[JSimpleSearcherResult]
+            The hits.
+        field : str
+            Field to use.
+        language : str
+            Language of corpus
+        blacklist : List[str]
+            strings that should not contained
+        Returns
+        -------
+        List[Text]
+            List of texts.
+     """
+    contexts = []
+    for i in range(0, len(hits)):
+        t = hits[i].raw if field == 'raw' else hits[i].contents
+        for s in blacklist:
+            if s in t:
+                continue
+        metadata = {'raw': hits[i].raw, 'docid': hits[i].docid}
+        contexts.append(Context(t, language, metadata, hits[i].score))
+    return contexts

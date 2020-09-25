@@ -1,6 +1,8 @@
-pyserini
-transformers
-torch
-torchvision
-tensorboardX
-hanziconv
+tqdm>=4.45.0
+numpy>=1.18.5
+pyserini==0.9.4.0
+transformers>=2.10.0
+torch==1.5.1
+torchvision==0.6.1
+tensorboardX>=2.1
+hanziconv>=0.3.2
