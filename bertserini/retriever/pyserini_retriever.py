@@ -13,6 +13,11 @@ def build_searcher(index_path, k1=0.9, b=0.4, language="en"):
     searcher.object.setLanguage(language)
     return searcher
 
+def build_searcher_from_prebuilt_index(index_name, k1=0.9, b=0.4, language="en"):
+    searcher = SimpleSearcher.from_prebuilt_index(index_name)
+    searcher.set_bm25(k1, b)
+    searcher.object.setLanguage(language)
+    return searcher
 
 def retriever(question, searcher, para_num=20):
     language = question.language
