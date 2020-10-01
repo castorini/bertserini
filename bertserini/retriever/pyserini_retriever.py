@@ -17,10 +17,7 @@ def build_searcher(index_path, k1=0.9, b=0.4, language="en"):
 def retriever(question, searcher, para_num=20):
     language = question.language
     try:
-        if language == "zh":
-            hits = searcher.search(question.text.encode("utf-8"), k=para_num)
-        else:
-            hits = searcher.search(question.text, k=para_num)
+        hits = searcher.search(question.text, k=para_num)
     except ValueError as e:
         logger.error("Search failure: {}, {}".format(question.text, e))
         return []

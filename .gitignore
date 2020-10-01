@@ -1,9 +1,9 @@
 cache*
 *.log
 *.json
-
+__pycache__/
 .idea/
-
+indexes/
 build/
 dist/
 

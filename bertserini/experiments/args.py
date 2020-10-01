@@ -26,7 +26,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--tokenizer_name",
-    default="",
+    default=None,
     type=str,
     help="Pretrained tokenizer name or path if not the same as model_name",
 )
@@ -48,5 +48,15 @@ parser.add_argument(
     default=10,
     type=int,
     help="The number of contexts retrieved for a question",
+)
+parser.add_argument(
+    "--support_no_answer",
+    action="store_true",
+    help="support no answer prediction",
+)
+parser.add_argument(
+    "--strip_accents",
+    action="store_true",
+    help="script accents for questions",
 )
 args = parser.parse_args()
