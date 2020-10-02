@@ -63,7 +63,7 @@ python -m bertserini.experiments.inference --dataset_path data/dev-v1.1.json \
 
 ```
 mkdir temp
-pyhton -m bertserini.experiments.evaluate --eval_data data/dev-v1.1.json \
+python -m bertserini.experiments.evaluate --eval_data data/dev-v1.1.json \
                                           --search_file prediction/squad_bert_large_pred.json \
                                           --output_path temp \
                                           --dataset squad
