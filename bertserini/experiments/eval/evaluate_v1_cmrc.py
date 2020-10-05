@@ -17,6 +17,9 @@ import pdb
 #from utils import init_logger
 #logger = init_logger("evaluation")
 
+#install punkt corpus
+nltk.download('punkt')
+
 # split Chinese with English
 def mixed_segmentation(in_str, rm_punc=False):
 	in_str = str(in_str).lower().strip()

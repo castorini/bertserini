@@ -58,7 +58,7 @@ python -m bertserini.experiments.inference --dataset_path data/cmrc2018_dev_squa
 
 ```
 mkdir temp
-pyhton -m bertserini.experiments.evaluate --eval_data data/cmrc2018_dev.json \
+python -m bertserini.experiments.evaluate --eval_data data/cmrc2018_dev.json \
                                           --search_file prediction/cmrc2018_pred.json \
                                           --output_path temp \
                                           --dataset cmrc
