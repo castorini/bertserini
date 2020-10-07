@@ -72,3 +72,7 @@ Expected results:
 ## rsvp-ai/bertserini-bert-base-squad, this is finetuned based on bert-base-uncased
 (0.5, {'exact_match': 40.179754020813625, 'f1': 47.828056659017584, 'recall': 49.517951036176, 'precision': 48.3495034100538, 'cover': 45.50614947965941, 'overlap': 56.20624408703879})
 ```
+
+## Replication Log
+
++ Results replicated by [@MXueguang](https://github.com/MXueguang) on 2020-10-07 (commit [`9b670a3`](https://github.com/MXueguang/bertserini/commit/9b670a3942d24eb0188d55a140342257407f9c52)) (Tesla P40)

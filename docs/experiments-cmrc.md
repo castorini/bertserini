@@ -68,3 +68,7 @@ Expected results:
 ## rsvp-ai/bertserini-bert-base-cmrc, this is bert-base-chinese finetuned on the chinese reading comprehension dataset(CMRC)
 (0.5, {'f1_score': 68.42519791441855, 'exact_match': 51.94159676918298, 'total_count': 3219, 'skip_count': 0})
 ```
+
+## Replication Log
+
++ Results replicated by [@MXueguang](https://github.com/MXueguang) on 2020-10-07 (commit [`9b670a3`](https://github.com/MXueguang/bertserini/commit/9b670a3942d24eb0188d55a140342257407f9c52)) (Tesla P40)
