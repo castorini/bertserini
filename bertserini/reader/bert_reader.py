@@ -1,9 +1,9 @@
 from typing import List
 
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering, squad_convert_examples_to_features
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering #squad_convert_examples_to_features
 from torch.utils.data import DataLoader, SequentialSampler
 import torch
-from transformers.data.processors.squad import SquadResult
+#from transformers.data.processors.squad import SquadResult
 
 from bertserini.reader.base import Reader, Question, Context, Answer
 
@@ -11,8 +11,11 @@ __all__ = ['BERT']
 
 from bertserini.train.run_squad import to_list
 
-from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
-
+#from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
+from transformers import SquadExample
+#from transformers.data.metrics.squad_metrics import compute_predictions_logits
+from bertserini.utils.utils_squad_new import compute_predictions_logits
+from transformers.data.processors.squad import squad_convert_examples_to_features, SquadResult
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
     examples = []
@@ -27,7 +30,7 @@ def craft_squad_examples(question: Question, contexts: List[Context]) -> List[Sq
                 title="",
                 is_impossible=False,
                 answers=[],
-                language=ctx.language
+                #language=ctx.language
             )
         )
     return examples
@@ -39,7 +42,7 @@ class BERT(Reader):
             tokenizer_name = model_name
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = AutoModelForQuestionAnswering.from_pretrained(model_name).to(self.device).eval()
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, do_lower_case=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, do_lower_case=True, use_fast=False)
         self.args = {
             "max_seq_length": 384,
             "doc_stride": 128,
@@ -98,14 +101,16 @@ class BERT(Reader):
                 eval_feature = features[feature_index.item()]
                 unique_id = int(eval_feature.unique_id)
 
-                output = [to_list(output[i]) for output in outputs]
+                output = [output[i] for output in outputs]
                 
-                start_logits, end_logits = output
+                #start_logits, end_logits = output
+                start_logits = outputs.start_logits[i]
+                end_logits = outputs.end_logits[i]
                 result = SquadResult(unique_id, start_logits, end_logits)
 
                 all_results.append(result)
 
-        answers, _ = compute_predictions_logits(
+        answers  = compute_predictions_logits(
             all_examples=examples,
             all_features=features,
             all_results=all_results,
@@ -119,14 +124,14 @@ class BERT(Reader):
             version_2_with_negative=self.args["version_2_with_negative"],
             null_score_diff_threshold=self.args["null_score_diff_threshold"],
             tokenizer=self.tokenizer,
-            language=question.language
+        #    language=question.language
         )
 
         all_answers = []
         for idx, ans in enumerate(answers):
             all_answers.append(Answer(
-                text=answers[ans][0],
-                score=answers[ans][1],
+                text=answers[ans][0]["text"],
+                score=answers[ans][0]["probability"],
                 ctx_score=contexts[idx].score,
                 language=question.language
             ))
