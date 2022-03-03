@@ -45,7 +45,7 @@ For `rsvp-ai/bertserini-bert-base-squad`
 python -m bertserini.experiments.inference --dataset_path data/dev-v1.1.json \
                                            --index_path indexes/lucene-index.enwiki-20180701-paragraphs \
                                            --model_name_or_path rsvp-ai/bertserini-bert-base-squad \
-                                           --output squad_bert_base_pred.json
+                                           --output squad_bert_base_pred.json \
                                            --topk 10
 
 ```
@@ -55,7 +55,7 @@ For `rsvp-ai/bertserini-bert-large-squad`
 python -m bertserini.experiments.inference --dataset_path data/dev-v1.1.json \
                                            --index_path indexes/lucene-index.enwiki-20180701-paragraphs \
                                            --model_name_or_path rsvp-ai/bertserini-bert-large-squad \
-                                           --output prediction/squad_bert_large_pred.json
+                                           --output prediction/squad_bert_large_pred.json \
                                            --topk 10
 
 ```
@@ -76,4 +76,5 @@ Expected results:
 
 ## rsvp-ai/bertserini-bert-base-squad, this is finetuned based on bert-base-uncased
 (0.5, {'exact_match': 40.179754020813625, 'f1': 47.828056659017584, 'recall': 49.517951036176, 'precision': 48.3495034100538, 'cover': 45.50614947965941, 'overlap': 56.20624408703879})
+Mar 02, 2022 reproduce by @amyxie361, (0.5, {'exact_match': 40.22705771050142, 'f1': 47.82830395639832, 'recall': 49.52073687640621, 'precision': 48.336237855777995, 'cover': 45.572374645222325, 'overlap': 56.12109744560075})
 ```
