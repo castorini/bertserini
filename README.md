@@ -20,7 +20,7 @@ BERTserini requires Python 3.6+ and a couple Python dependencies.
 The repo is tested on Python 3.6, Cuda 10.1, PyTorch 1.5.1 on Tesla P40 GPUs.
 Besides that, [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) is recommended for convinence. Please run the following commands to install the Python dependencies. 
 1. Clone the repo with ```git clone https://github.com/rsvp-ai/bertserini.git```
-2. ```pip install -r requirements.txt```
+2. ```pip install -r requirements.txt -f --find-links https://download.pytorch.org/whl/torch_stable.html```
 
 NOTE: Pyserini is the Python wrapper for Anserini. 
 Please refer to their project [Pyserini](https://github.com/castorini/pyserini) for detailed usage. Also, Pyserini supports part of the features in Anserini; you can also refer to [Anserini](https://github.com/castorini/anserini) for more settings.
@@ -76,6 +76,10 @@ We have evaluated our system on `SQuAD 1.1` and `CMRC2018` development set.
 Please see following documents for details:  
 - [SQuAD experiments](docs/experiments-squad.md)  
 - [CMRC experiments](docs/experiments-cmrc.md)
+
+## Training
+To finetune BERT on the SQuAD style dataset, please see [here](docs/train_squad.md) for details.
+
 ## Citation
 
 Please cite [the NAACL 2019 paper]((https://www.aclweb.org/anthology/N19-4013/)):
