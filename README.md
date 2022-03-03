@@ -62,7 +62,8 @@ NOTE:
 
  The index we used above is English Wikipedia, which could be download via:
 ```
-wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip
+#wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip (deprecated)
+wget https://rgw.cs.uwaterloo.ca/JIMMYLIN-bucket0/pyserini-indexes/lucene-index.enwiki-20180701-paragraphs.tar.gz
 ```
 
 After unzipping these file, we suggest you putting it in `indexes/`.

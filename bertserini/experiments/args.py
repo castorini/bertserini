@@ -26,7 +26,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--tokenizer_name",
-    default="",
+    default=None,
     type=str,
     help="Pretrained tokenizer name or path if not the same as model_name",
 )
