@@ -13,8 +13,8 @@ from bertserini.train.run_squad import to_list
 
 #from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
 from transformers import SquadExample
-#from transformers.data.metrics.squad_metrics import compute_predictions_logits
-from bertserini.utils.utils_squad_new import compute_predictions_logits
+from transformers.data.metrics.squad_metrics import compute_predictions_logits
+#from bertserini.utils.utils_squad_new import compute_predictions_logits
 from transformers.data.processors.squad import squad_convert_examples_to_features, SquadResult
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
@@ -101,7 +101,7 @@ class BERT(Reader):
                 eval_feature = features[feature_index.item()]
                 unique_id = int(eval_feature.unique_id)
 
-                output = [output[i] for output in outputs]
+                output = [outputs[oname][i] for oname in outputs]
                 
                 #start_logits, end_logits = output
                 start_logits = outputs.start_logits[i]
@@ -110,7 +110,7 @@ class BERT(Reader):
 
                 all_results.append(result)
 
-        answers  = compute_predictions_logits(
+        answers = compute_predictions_logits(
             all_examples=examples,
             all_features=features,
             all_results=all_results,

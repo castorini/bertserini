@@ -12,9 +12,12 @@ if __name__ == "__main__":
 
     all_answer = []
     for question in tqdm(questions):
+        print("Start retrieve")
         contexts = retriever(question, searcher, args.topk)
+        print("Start read")
         final_answers = bert_reader.predict(question, contexts)
         final_answers_lst = []
+        print("start rerank")
         for ans in final_answers:
             final_answers_lst.append(
                 {"id": question.id,

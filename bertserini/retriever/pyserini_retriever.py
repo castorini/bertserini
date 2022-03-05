@@ -1,6 +1,8 @@
 from typing import List
+import json
 
-from pyserini.search import SimpleSearcher, JSimpleSearcherResult
+#from pyserini.search import SimpleSearcher, JSimpleSearcherResult
+from pyserini.search.lucene import LuceneSearcher, JLuceneSearcherResult
 from bertserini.utils.utils import init_logger
 from bertserini.reader.base import Context
 
@@ -8,13 +10,15 @@ logger = init_logger("retriever")
 
 
 def build_searcher(index_path, k1=0.9, b=0.4, language="en"):
-    searcher = SimpleSearcher(index_path)
+    #searcher = SimpleSearcher(index_path)
+    searcher = LuceneSearcher(index_path)
     searcher.set_bm25(k1, b)
     searcher.object.setLanguage(language)
     return searcher
 
 def build_searcher_from_prebuilt_index(index_name, k1=0.9, b=0.4, language="en"):
-    searcher = SimpleSearcher.from_prebuilt_index(index_name)
+    #searcher = SimpleSearcher.from_prebuilt_index(index_name)
+    searcher = LuceneSearcher.from_prebuilt_index(index_name)
     searcher.set_bm25(k1, b)
     searcher.object.setLanguage(language)
     return searcher
@@ -32,7 +36,8 @@ def retriever(question, searcher, para_num=20):
     return hits_to_contexts(hits, language)
 
 
-def hits_to_contexts(hits: List[JSimpleSearcherResult], language="en", field='raw', blacklist=[]) -> List[Context]:
+def hits_to_contexts(hits: List[JLuceneSearcherResult], #List[JSimpleSearcherResult]
+    language="en", field="raw", blacklist=[]) -> List[Context]:
     """
         Converts hits from Pyserini into a list of texts.
         Parameters
@@ -53,6 +58,7 @@ def hits_to_contexts(hits: List[JSimpleSearcherResult], language="en", field='ra
     contexts = []
     for i in range(0, len(hits)):
         t = hits[i].raw if field == 'raw' else hits[i].contents
+        t = json.loads(t)["contents"]
         for s in blacklist:
             if s in t:
                 continue
