@@ -57,8 +57,14 @@ def hits_to_contexts(hits: List[JLuceneSearcherResult], #List[JSimpleSearcherRes
      """
     contexts = []
     for i in range(0, len(hits)):
-        t = hits[i].raw if field == 'raw' else hits[i].contents
-        t = json.loads(t)["contents"]
+        if field == 'raw':
+            t = hits[i].raw
+        else:
+            t = hits[i].contents
+        try: 
+            t = json.loads(t)["contents"]
+        except:
+            pass
         for s in blacklist:
             if s in t:
                 continue

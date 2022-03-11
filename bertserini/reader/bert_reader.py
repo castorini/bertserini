@@ -1,4 +1,5 @@
 from typing import List
+import json
 
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering #squad_convert_examples_to_features
 from torch.utils.data import DataLoader, SequentialSampler
@@ -11,10 +12,8 @@ __all__ = ['BERT']
 
 from bertserini.train.run_squad import to_list
 
-#from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
 from transformers import SquadExample
-from transformers.data.metrics.squad_metrics import compute_predictions_logits
-#from bertserini.utils.utils_squad_new import compute_predictions_logits
+from bertserini.utils.utils_squad_metrics import compute_predictions_logits
 from transformers.data.processors.squad import squad_convert_examples_to_features, SquadResult
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
@@ -37,7 +36,7 @@ def craft_squad_examples(question: Question, contexts: List[Context]) -> List[Sq
 
 
 class BERT(Reader):
-    def __init__(self, model_name: str, tokenizer_name: str = None):
+    def __init__(self, model_name: str, tokenizer_name: str = None, output_nbest_file=None):
         if tokenizer_name is None:
             tokenizer_name = model_name
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -53,7 +52,7 @@ class BERT(Reader):
             "max_answer_length": 30,
             "do_lower_case": True,
             "output_prediction_file": False,
-            "output_nbest_file": None,
+            "output_nbest_file": output_nbest_file,
             "output_null_log_odds_file": None,
             "verbose_logging": False,
             "version_2_with_negative": True,
@@ -110,7 +109,7 @@ class BERT(Reader):
 
                 all_results.append(result)
 
-        answers = compute_predictions_logits(
+        answers, nbest = compute_predictions_logits(
             all_examples=examples,
             all_features=features,
             all_results=all_results,
@@ -124,14 +123,14 @@ class BERT(Reader):
             version_2_with_negative=self.args["version_2_with_negative"],
             null_score_diff_threshold=self.args["null_score_diff_threshold"],
             tokenizer=self.tokenizer,
-        #    language=question.language
         )
+        #nbest = json.load(open(self.args["output_nbest_file"],'r'))
 
         all_answers = []
-        for idx, ans in enumerate(answers):
+        for idx, ans in enumerate(nbest):
             all_answers.append(Answer(
-                text=answers[ans][0]["text"],
-                score=answers[ans][0]["probability"],
+                text=nbest[ans][0]["text"],
+                score=nbest[ans][0]["start_logit"] + nbest[ans][0]["end_logit"],
                 ctx_score=contexts[idx].score,
                 language=question.language
             ))

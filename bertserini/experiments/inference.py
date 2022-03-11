@@ -7,17 +7,14 @@ from bertserini.experiments.args import *
 
 if __name__ == "__main__":
     questions = extract_squad_questions(args.dataset_path)
-    bert_reader = BERT(args.model_name_or_path, args.tokenizer_name)
+    bert_reader = BERT(args.model_name_or_path, args.tokenizer_name, args.output_nbest_file)
     searcher = build_searcher(args.index_path, language=args.language)
 
     all_answer = []
     for question in tqdm(questions):
-        print("Start retrieve")
         contexts = retriever(question, searcher, args.topk)
-        print("Start read")
         final_answers = bert_reader.predict(question, contexts)
         final_answers_lst = []
-        print("start rerank")
         for ans in final_answers:
             final_answers_lst.append(
                 {"id": question.id,

@@ -98,8 +98,7 @@ def evaluate(dataset, predictions):
             for qa in paragraph['qas']:
                 total += 1
                 if qa['id'] not in predictions:
-                    message = 'Unanswered question ' + qa['id'] + \
-                              ' will receive score 0.'
+                    message = 'Unanswered question ' + str(qa['id']) + ' will receive score 0.'
                     logger.error(message)
                     continue
                 ground_truths = list(map(lambda x: x['text'], qa['answers']))
@@ -137,9 +136,9 @@ def squad_v1_eval(dataset_filename, prediction_filename):
     expected_version = '1.1'
     with open(dataset_filename) as dataset_file:
         dataset_json = json.load(dataset_file)
-        if dataset_json['version'] != expected_version:
-            logger.error('Evaluation expects v-{}, but got dataset with v-{}'.format(
-                expected_version, dataset_json['version']))
+        #if dataset_json['version'] != expected_version:
+        #    logger.error('Evaluation expects v-{}, but got dataset with v-{}'.format(
+        #        expected_version, dataset_json['version']))
         dataset = dataset_json['data']
     with open(prediction_filename) as prediction_file:
         predictions = json.load(prediction_file)
