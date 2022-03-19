@@ -29,7 +29,8 @@ import string
 
 #from ...models.bert import BasicTokenizer
 #from ...utils import logging
-from transformers.models.bert import BasicTokenizer
+#from transformers.models.bert import BasicTokenizer
+from transformers import AutoTokenizer
 from transformers.utils import logging
 
 
@@ -254,7 +255,7 @@ def squad_evaluate(examples, preds, no_answer_probs=None, no_answer_probability_
     return evaluation
 
 
-def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False, language="zh"):
+def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False, language="en", tokenizer_name="rsvp-ai/bertserini-bert-base-squad"):
     """Project the tokenized prediction back to the original text."""
 
     # When we created the data, we kept track of the alignment between original
@@ -297,7 +298,8 @@ def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False, l
     # and `pred_text`, and check if they are the same length. If they are
     # NOT the same length, the heuristic has failed. If they are the same
     # length, we assume the characters are one-to-one aligned.
-    tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
+    #tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, use_fast=False)
 
     if language=="zh":
         tok_text = "".join(tokenizer.tokenize(orig_text))
