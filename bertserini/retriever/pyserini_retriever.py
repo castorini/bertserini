@@ -3,7 +3,6 @@ import json
 
 from pyserini.search import FaissSearcher, DprQueryEncoder
 from pyserini.search.lucene import LuceneSearcher, JLuceneSearcherResult
-
 from bertserini.utils.utils import init_logger
 from bertserini.reader.base import Context
 
@@ -61,7 +60,7 @@ def hits_to_contexts(hits: List[JLuceneSearcherResult], language="en", field='ra
         Converts hits from Pyserini into a list of texts.
         Parameters
         ----------
-        hits : List[JSimpleSearcherResult]
+        hits : List[JLuceneSearcherResult]
             The hits.
         field : str
             Field to use.
@@ -77,6 +76,10 @@ def hits_to_contexts(hits: List[JLuceneSearcherResult], language="en", field='ra
     contexts = []
     for i in range(0, len(hits)):
         t = hits[i].raw if field == 'raw' else hits[i].contents
+        try: # the previous chinese index stores the contents as "raw", while the english index stores the json string.
+            t = json.loads(t)["contents"]
+        except:
+            pass
         for s in blacklist:
             if s in t:
                 continue

@@ -75,6 +75,12 @@ parser.add_argument(
     help="The output file where the runs results will be written to",
 )
 parser.add_argument(
+    "--output_nbest_file",
+    default="./tmp.nbest", 
+    type=str,
+    help="The output file for store nbest results temporarily",
+)
+parser.add_argument(
     "--language",
     default="en",
     type=str,

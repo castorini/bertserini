@@ -1,17 +1,16 @@
 from typing import List
 
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering, squad_convert_examples_to_features
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering, SquadExample
 from torch.utils.data import DataLoader, SequentialSampler
 import torch
-from transformers.data.processors.squad import SquadResult
+from transformers.data.processors.squad import SquadResult, squad_convert_examples_to_features
 
 from bertserini.reader.base import Reader, Question, Context, Answer
+from bertserini.utils.utils_squad_metrics import compute_predictions_logits
 
 __all__ = ['BERT']
 
 from bertserini.train.run_squad import to_list
-
-from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
 
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
@@ -99,14 +98,14 @@ class BERT(Reader):
                 eval_feature = features[feature_index.item()]
                 unique_id = int(eval_feature.unique_id)
 
-                output = [to_list(output[i]) for output in outputs]
+                output = [outputs[oname][i]) for oname in outputs]
                 
                 start_logits, end_logits = output
                 result = SquadResult(unique_id, start_logits, end_logits)
 
                 all_results.append(result)
 
-        answers, _ = compute_predictions_logits(
+        answers, nbest = compute_predictions_logits(
             all_examples=examples,
             all_features=features,
             all_results=all_results,
@@ -124,10 +123,10 @@ class BERT(Reader):
         )
 
         all_answers = []
-        for idx, ans in enumerate(answers):
+        for idx, ans in enumerate(nbest):
             all_answers.append(Answer(
-                text=answers[ans][0],
-                score=answers[ans][1],
+                text=nbest[ans][0]["text"],
+                score=nbest[ans][0]["start_logit"] + nbest[ans][0]["end_logit"],
                 ctx_score=contexts[idx].score,
                 language=question.language
             ))
