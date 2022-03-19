@@ -38,7 +38,7 @@ class BERT(Reader):
             tokenizer_name = model_name
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = AutoModelForQuestionAnswering.from_pretrained(model_name).to(self.device).eval()
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, do_lower_case=True, , use_fast=Fals)
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, do_lower_case=True, use_fast=Fals)
         self.args = {
             "max_seq_length": 384,
             "doc_stride": 128,
