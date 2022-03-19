@@ -76,7 +76,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--output_nbest_file",
-    default="./tmp.nbest", 
+    default=None, 
     type=str,
     help="The output file for store nbest results temporarily",
 )

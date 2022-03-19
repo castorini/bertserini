@@ -26,7 +26,6 @@ def craft_squad_examples(question: Question, contexts: List[Context]) -> List[Sq
                 title="",
                 is_impossible=False,
                 answers=[],
-                language=ctx.language
             )
         )
     return examples
@@ -39,7 +38,7 @@ class BERT(Reader):
             self.model_args.tokenizer_name = self.model_args.model_name_or_path
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = AutoModelForQuestionAnswering.from_pretrained(self.model_args.model_name_or_path).to(self.device).eval()
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_args.tokenizer_name, do_lower_case=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_args.tokenizer_name, do_lower_case=True, use_fast=False)
         self.args = {
             "max_seq_length": 384,
             "doc_stride": 128,

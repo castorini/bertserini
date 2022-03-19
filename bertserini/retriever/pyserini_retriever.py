@@ -10,7 +10,7 @@ logger = init_logger("retriever")
 
 
 def build_searcher(args):
-    if args.retirever == "bm25":
+    if args.retriever == "bm25":
         searcher = LuceneSearcher(args.index_path)
         searcher.set_bm25(args.k1, args.b)
         searcher.object.setLanguage(args.language)
@@ -19,7 +19,7 @@ def build_searcher(args):
             encoder_dir=args.encoder,
             tokenizer_name=args.query_tokenizer_name,
             device=args.device)
-        searcher = FaissSearcher(args.index, query_encoder)
+        searcher = FaissSearcher(args.index_path, query_encoder)
         ssearcher = LuceneSearcher(args.sparse_index)
         searcher.ssearcher = ssearcher
     else:
@@ -27,7 +27,7 @@ def build_searcher(args):
     return searcher
 
 def build_searcher_from_prebuilt_index(args):
-    if args.retirever == "bm25":
+    if args.retriever == "bm25":
         searcher = LuceneSearcher.from_prebuilt_index(args.index_path)
         searcher.set_bm25(args.k1, args.b)
         searcher.object.setLanguage(args.language)
@@ -49,10 +49,10 @@ def retriever(question, searcher, para_num=20):
                 hits = searcher.search(question.text.encode("utf-8"), k=para_num)
             else:
                 hits = searcher.search(question.text, k=para_num)
-        hits = [(h, h.score), for h in hits]
         except ValueError as e:
             logger.error("Search failure: {}, {}".format(question.text, e))
             return []
+        hits = [(h.raw, h.score) for h in hits]
     return hits_to_contexts(hits, language)
 
 
@@ -77,14 +77,14 @@ def hits_to_contexts(hits: List[JLuceneSearcherResult], language="en", field='ra
     contexts = []
     for i in range(0, len(hits)):
         hit, score = hits[i]
-        t = hit.raw if field == 'raw' else hit.contents
         try: # the previous chinese index stores the contents as "raw", while the english index stores the json string.
-            t = json.loads(t)["contents"]
+            t = json.loads(hit)["contents"]
         except:
-            pass
+            t = hit
         for s in blacklist:
             if s in t:
                 continue
         #metadata = {'raw': hits.raw, 'docid': hits.docid}
+        metadata = {}
         contexts.append(Context(t, language, metadata, score))
     return contexts
