@@ -254,7 +254,7 @@ def squad_evaluate(examples, preds, no_answer_probs=None, no_answer_probability_
     return evaluation
 
 
-def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False):
+def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False, language="zh"):
     """Project the tokenized prediction back to the original text."""
 
     # When we created the data, we kept track of the alignment between original
@@ -299,7 +299,10 @@ def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False):
     # length, we assume the characters are one-to-one aligned.
     tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
 
-    tok_text = " ".join(tokenizer.tokenize(orig_text))
+    if language=="zh":
+        tok_text = "".join(tokenizer.tokenize(orig_text))
+    else:
+        tok_text = " ".join(tokenizer.tokenize(orig_text))
 
     start_position = tok_text.find(pred_text)
     if start_position == -1:
@@ -397,6 +400,7 @@ def compute_predictions_logits(
     version_2_with_negative,
     null_score_diff_threshold,
     tokenizer,
+    language="en",
 ):
     """Write final predictions to the json file and log-odds of null if needed."""
     if output_prediction_file:
@@ -510,10 +514,17 @@ def compute_predictions_logits(
 
                 # Clean whitespace
                 tok_text = tok_text.strip()
-                tok_text = " ".join(tok_text.split())
-                orig_text = " ".join(orig_tokens)
+                if language == "zh":
+                    tok_text = "".join(tok_text.split())
+                    orig_text = "".join(orig_tokens)
+                else:
+                    tok_text = " ".join(tok_text.split())
+                    orig_text = " ".join(orig_tokens)
 
-                final_text = get_final_text(tok_text, orig_text, do_lower_case, verbose_logging)
+                final_text = get_final_text(tok_text, orig_text, do_lower_case, verbose_logging, language=language)
+                if "##" in final_text or "[UNK]" in final_text:
+                    print(final_text, "||", tok_text, "||", orig_text)
+
                 if final_text in seen_predictions:
                     continue
 
@@ -548,7 +559,8 @@ def compute_predictions_logits(
                 if entry.text:
                     best_non_null_entry = entry
 
-        probs = _compute_softmax(total_scores)
+        #probs = _compute_softmax(total_scores)
+        probs = total_scores
 
         nbest_json = []
         for (i, entry) in enumerate(nbest):
@@ -567,15 +579,18 @@ def compute_predictions_logits(
         assert len(nbest_json) >= 1, "No valid predictions"
 
         if not version_2_with_negative:
-            all_predictions[example.qas_id] = nbest_json[0]["text"]
+            all_predictions[example.qas_id] = (nbest_json[0]["text"],
+                    nbest_json[0]['probability'])
         else:
             # predict "" iff the null score - the score of best non-null > threshold
             score_diff = score_null - best_non_null_entry.start_logit - (best_non_null_entry.end_logit)
             scores_diff_json[example.qas_id] = score_diff
             if score_diff > null_score_diff_threshold:
-                all_predictions[example.qas_id] = ""
+                all_predictions[example.qas_id] = ("", 0)
             else:
-                all_predictions[example.qas_id] = best_non_null_entry.text
+                all_predictions[example.qas_id] = (
+                    best_non_null_entry.text,
+                    best_non_null_entry.start_logit + best_non_null_entry.end_logit)
         all_nbest_json[example.qas_id] = nbest_json
 
     if output_prediction_file:
