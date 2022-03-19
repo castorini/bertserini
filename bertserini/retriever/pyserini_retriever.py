@@ -49,6 +49,7 @@ def retriever(question, searcher, para_num=20):
                 hits = searcher.search(question.text.encode("utf-8"), k=para_num)
             else:
                 hits = searcher.search(question.text, k=para_num)
+        hits = [(h, h.score), for h in hits]
         except ValueError as e:
             logger.error("Search failure: {}, {}".format(question.text, e))
             return []
@@ -75,7 +76,8 @@ def hits_to_contexts(hits: List[JLuceneSearcherResult], language="en", field='ra
      """
     contexts = []
     for i in range(0, len(hits)):
-        t = hits[i].raw if field == 'raw' else hits[i].contents
+        hit, score = hits[i]
+        t = hit.raw if field == 'raw' else hit.contents
         try: # the previous chinese index stores the contents as "raw", while the english index stores the json string.
             t = json.loads(t)["contents"]
         except:
@@ -83,6 +85,6 @@ def hits_to_contexts(hits: List[JLuceneSearcherResult], language="en", field='ra
         for s in blacklist:
             if s in t:
                 continue
-        metadata = {'raw': hits[i].raw, 'docid': hits[i].docid}
-        contexts.append(Context(t, language, metadata, hits[i].score))
+        #metadata = {'raw': hits.raw, 'docid': hits.docid}
+        contexts.append(Context(t, language, metadata, score))
     return contexts
