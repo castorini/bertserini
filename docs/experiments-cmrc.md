@@ -7,16 +7,16 @@
 
 We have indexed the 2018 Wikipedia Chinese dump. You can download the prepared index here:
 ```
-wget ftp://72.143.107.253/BERTserini/chinese_wiki_2018_index.zip
+#wget ftp://72.143.107.253/BERTserini/chinese_wiki_2018_index.zip
+wget https://rgw.cs.uwaterloo.ca/JIMMYLIN-bucket0/pyserini-indexes/lucene-index.zhwiki-20181201-paragraphs.tar.gz
 ```
-```*index.zip``` contains the indexed latest Wikipedia dump with Anserini.
 
 After unzipping these files, put them under the root path of this repo, and then you are ready to go.
 Take the following folder structure as an example:
 ```
 bertserini
 +--- indexes
-|    +--- lucene-index.wiki_zh_paragraph_with_title_0.6.0.pos+docvectors
+|    +--- lucene-index.zhwiki-20181201-paragraphs
 |    |    +--- ...
 +--- other files under this repo
 ```
@@ -46,10 +46,10 @@ mv index.html cmrc2018_dev_squad.json
 For `rsvp-ai/bertserini-bert-base-cmrc`
 ```
 python -m bertserini.experiments.inference --dataset_path data/cmrc2018_dev_squad.json \
-                                           --index_path indexes/lucene-index.wiki_zh_paragraph_with_title_0.6.0.pos+docvectors \
+                                           --index_path indexes/lucene-index.zhwiki-20181201-paragraphs \
                                            --model_name_or_path rsvp-ai/bertserini-bert-base-cmrc \
-                                           --output prediction/cmrc2018_pred.json
-                                           --topk 10
+                                           --output prediction/cmrc2018_pred.json \
+                                           --topk 10 \
                                            --language zh
 
 ```
@@ -70,4 +70,5 @@ Expected results:
 ```
 ## rsvp-ai/bertserini-bert-base-cmrc, this is bert-base-chinese finetuned on the chinese reading comprehension dataset(CMRC)
 (0.5, {'f1_score': 68.0033167812909, 'exact_match': 51.164958061509786, 'total_count': 3219, 'skip_count': 1})
+replicated Mar 10 2022 by @amyxie361 (0.5, {'f1_score': 65.64519666259483, 'exact_match': 49.98446722584654, 'total_count': 3219, 'skip_count': 0})
 ```
