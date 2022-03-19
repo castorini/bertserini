@@ -12,8 +12,6 @@ __all__ = ['BERT']
 
 from bertserini.train.run_squad import to_list
 
-from bertserini.utils.utils_squad import SquadExample, compute_predictions_logits
-
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
     examples = []
