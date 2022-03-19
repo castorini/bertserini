@@ -1,6 +1,6 @@
 # Bertserini: Baseline on SQUAD QA
 
-1. Clone the repo with ```git clone https://github.com/rsvp-ai/bertserini.git```
+1. Clone the repo with ```git clone https://github.com/castorini/bertserini.git```
 2. ```pip install -r requirements.txt```
 
 ## Download PreBuilt Wikipedia Index
