@@ -98,7 +98,6 @@ class BERT(Reader):
                 unique_id = int(eval_feature.unique_id)
 
                 output = [outputs[oname][i] for oname in outputs]
-
                 start_logits = outputs.start_logits[i]
                 end_logits = outputs.end_logits[i]
                 try:
@@ -106,6 +105,7 @@ class BERT(Reader):
                     end_logits = end_logits.item()
                 except:
                     pass
+                
                 result = SquadResult(unique_id, start_logits, end_logits)
 
                 all_results.append(result)

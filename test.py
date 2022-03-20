@@ -5,9 +5,9 @@ from bertserini.experiments.args import *
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
 
 do_english_test = True
-do_local_test = False
-do_bm25_test = False
-do_dpr_test = False
+do_local_test = True
+do_bm25_test = True
+do_dpr_test = True
 do_chinese_test = True
 
 if do_english_test:
@@ -57,6 +57,7 @@ if do_chinese_test:
     bert_reader = BERT(args)
     args.index_path = "./indexes/lucene-index.zhwiki-20181201-paragraphs"
     args.language = "zh"
+    args.retriever = "bm25"
     question = Question("《战国无双3》是由哪两个公司合作开发的？")
     searcher = build_searcher(args)
     contexts = retriever(question, searcher, 10)
