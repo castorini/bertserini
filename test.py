@@ -1,20 +1,27 @@
 from bertserini.reader.base import Question, Context
 from bertserini.reader.bert_reader import BERT
+from bertserini.reader.dpr_reader import DPR
 from bertserini.utils.utils_new import get_best_answer
 from bertserini.experiments.args import *
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
 
-do_english_test = True
+ENG_reader = "DPR"
 do_local_test = True
 do_bm25_test = True
 do_dpr_test = True
-do_chinese_test = True
+do_chinese_test = False
 
-if do_english_test:
+if ENG_reader == "BERT":
     args.model_name_or_path = "rsvp-ai/bertserini-bert-base-squad"
     args.tokenizer_name = "rsvp-ai/bertserini-bert-base-squad"
     bert_reader = BERT(args)
-    print("Question: Why did Mark Twain call the 19th century the glied age?")
+
+elif ENG_reader == "DPR":
+    args.model_name_or_path = "facebook/dpr-reader-multiset-base"
+    args.tokenizer_name = "facebook/dpr-reader-multiset-base"
+    bert_reader = DPR(args)
+
+print("Question: Why did Mark Twain call the 19th century the glied age?")
 
 if do_local_test:
     print("######################### Testing Local Context #########################")
