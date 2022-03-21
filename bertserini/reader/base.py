@@ -49,10 +49,12 @@ class Context:
 
     def __init__(self,
                  text: str,
+                 title: Optional[str] = "",
                  language: str = "en",
                  metadata: Mapping[str, Any] = None,
                  score: Optional[float] = 0):
         self.text = text
+        self.title = title
         self.language = language
         if metadata is None:
             metadata = dict()

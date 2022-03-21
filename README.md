@@ -77,6 +77,35 @@ We have evaluated our system on `SQuAD 1.1` and `CMRC2018` development set.
 Please see following documents for details:  
 - [SQuAD experiments](docs/experiments-squad.md)  
 - [CMRC experiments](docs/experiments-cmrc.md)
+
+## DPR supporting
+
+We enabled DPR retriever with pyserini indexed corpus.
+The corpus is created from the command:
+```
+python -m pyserini.encode \
+    input   --corpus <original_corpus_dir> \
+            --delimiter "DoNotApplyDelimiterPlease" \
+            --shard-id 0 \
+            --shard-num 1 \
+    output  --embeddings dpr-ctx_encoder-multiset-base.corpus \
+            --to-faiss \
+    encoder --encoder facebook/dpr-ctx_encoder-multiset-base \
+            --batch-size 16 \
+            --device cuda:0 \
+            --fp16  # if inference with autocast()
+```
+
+When enable dpr option in e2e inference, please set the following arguments:
+
+```
+--retriever dpr \
+--encoder <path to dpr query encoder> \
+--index_path <pyserini indexed dpr dir> \
+--sparse_index <bm25 indexed corpus dir> \ # the dense index doesn't store the raw text, we need to get the original text from the sparse index
+--device cuda:0
+```
+
 ## Citation
 
 Please cite [the NAACL 2019 paper]((https://www.aclweb.org/anthology/N19-4013/)):
