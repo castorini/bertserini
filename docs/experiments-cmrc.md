@@ -7,7 +7,6 @@
 
 We have indexed the 2018 Wikipedia Chinese dump. You can download the prepared index here:
 ```
-#wget ftp://72.143.107.253/BERTserini/chinese_wiki_2018_index.zip
 wget https://rgw.cs.uwaterloo.ca/JIMMYLIN-bucket0/pyserini-indexes/lucene-index.zhwiki-20181201-paragraphs.tar.gz
 ```
 

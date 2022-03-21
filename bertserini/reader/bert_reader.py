@@ -1,20 +1,17 @@
 from typing import List
 import json
 
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering #squad_convert_examples_to_features
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering, SquadExample
 from torch.utils.data import DataLoader, SequentialSampler
 import torch
-#from transformers.data.processors.squad import SquadResult
+from transformers.data.processors.squad import SquadResult, squad_convert_examples_to_features
 
 from bertserini.reader.base import Reader, Question, Context, Answer
+from bertserini.utils.utils_squad_metrics import compute_predictions_logits
 
 __all__ = ['BERT']
 
 from bertserini.train.run_squad import to_list
-
-from transformers import SquadExample
-from bertserini.utils.utils_squad_metrics import compute_predictions_logits
-from transformers.data.processors.squad import squad_convert_examples_to_features, SquadResult
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
     examples = []
@@ -36,12 +33,13 @@ def craft_squad_examples(question: Question, contexts: List[Context]) -> List[Sq
 
 
 class BERT(Reader):
-    def __init__(self, model_name: str, tokenizer_name: str = None, output_nbest_file=None):
-        if tokenizer_name is None:
-            tokenizer_name = model_name
+    def __init__(self, args):
+        self.model_args = args
+        if self.model_args.tokenizer_name is None:
+            self.model_args.tokenizer_name = self.model_args.model_name_or_path
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model = AutoModelForQuestionAnswering.from_pretrained(model_name).to(self.device).eval()
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, do_lower_case=True, use_fast=False)
+        self.model = AutoModelForQuestionAnswering.from_pretrained(self.model_args.model_name_or_path).to(self.device).eval()
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_args.tokenizer_name, do_lower_case=True, use_fast=False)
         self.args = {
             "max_seq_length": 384,
             "doc_stride": 128,
@@ -52,7 +50,7 @@ class BERT(Reader):
             "max_answer_length": 30,
             "do_lower_case": True,
             "output_prediction_file": False,
-            "output_nbest_file": output_nbest_file,
+            "output_nbest_file": self.model_args.output_nbest_file,
             "output_null_log_odds_file": None,
             "verbose_logging": False,
             "version_2_with_negative": True,
@@ -80,7 +78,7 @@ class BERT(Reader):
 
         # Note that DistributedSampler samples randomly
         eval_sampler = SequentialSampler(dataset)
-        eval_dataloader = DataLoader(dataset, sampler=eval_sampler, batch_size=32)
+        eval_dataloader = DataLoader(dataset, sampler=eval_sampler, batch_size=self.model_args.eval_batch_size)
 
         all_results = []
 
@@ -102,9 +100,13 @@ class BERT(Reader):
 
                 output = [outputs[oname][i] for oname in outputs]
                 
-                #start_logits, end_logits = output
                 start_logits = outputs.start_logits[i]
                 end_logits = outputs.end_logits[i]
+                try:
+                    start_logits = start_logits.item()
+                    end_logits = end_logits.item()
+                except:
+                    pass
                 result = SquadResult(unique_id, start_logits, end_logits)
 
                 all_results.append(result)

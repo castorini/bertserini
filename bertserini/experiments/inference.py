@@ -7,8 +7,8 @@ from bertserini.experiments.args import *
 
 if __name__ == "__main__":
     questions = extract_squad_questions(args.dataset_path)
-    bert_reader = BERT(args.model_name_or_path, args.tokenizer_name, args.output_nbest_file)
-    searcher = build_searcher(args.index_path, language=args.language)
+    bert_reader = BERT(args)
+    searcher = build_searcher(args)
 
     all_answer = []
     for question in tqdm(questions):
