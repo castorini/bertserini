@@ -136,14 +136,13 @@ def squad_v1_eval(dataset_filename, prediction_filename):
     expected_version = '1.1'
     with open(dataset_filename) as dataset_file:
         dataset_json = json.load(dataset_file)
-        #if dataset_json['version'] != expected_version:
-        #    logger.error('Evaluation expects v-{}, but got dataset with v-{}'.format(
-        #        expected_version, dataset_json['version']))
+        if dataset_json['version'] != expected_version:
+            logger.error('Evaluation expects v-{}, but got dataset with v-{}'.format(
+                expected_version, dataset_json['version']))
         dataset = dataset_json['data']
     with open(prediction_filename) as prediction_file:
         predictions = json.load(prediction_file)
     ans = evaluate(dataset, predictions)
-    # print(json.dumps(ans))
     return ans
 
 

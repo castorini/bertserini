@@ -33,7 +33,6 @@ from transformers import AutoTokenizer
 
 logger = logging.get_logger(__name__)
 
-
 def normalize_answer(s):
     """Lower text and remove punctuation, articles and extra whitespace."""
 

@@ -9,5 +9,4 @@ build/
 dist/
 
 bertserini.egg-info/
-
 indexes/

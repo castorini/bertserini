@@ -1,5 +1,4 @@
 from typing import List
-import json
 
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering, SquadExample
 from torch.utils.data import DataLoader, SequentialSampler
@@ -26,7 +25,6 @@ def craft_squad_examples(question: Question, contexts: List[Context]) -> List[Sq
                 title="",
                 is_impossible=False,
                 answers=[],
-                #language=ctx.language
             )
         )
     return examples
@@ -99,7 +97,6 @@ class BERT(Reader):
                 unique_id = int(eval_feature.unique_id)
 
                 output = [outputs[oname][i] for oname in outputs]
-                
                 start_logits = outputs.start_logits[i]
                 end_logits = outputs.end_logits[i]
                 try:
@@ -107,6 +104,7 @@ class BERT(Reader):
                     end_logits = end_logits.item()
                 except:
                     pass
+
                 result = SquadResult(unique_id, start_logits, end_logits)
 
                 all_results.append(result)
@@ -125,8 +123,8 @@ class BERT(Reader):
             version_2_with_negative=self.args["version_2_with_negative"],
             null_score_diff_threshold=self.args["null_score_diff_threshold"],
             tokenizer=self.tokenizer,
+            language=questions.language
         )
-        #nbest = json.load(open(self.args["output_nbest_file"],'r'))
 
         all_answers = []
         for idx, ans in enumerate(nbest):
