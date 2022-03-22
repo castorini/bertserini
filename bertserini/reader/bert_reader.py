@@ -123,7 +123,7 @@ class BERT(Reader):
             version_2_with_negative=self.args["version_2_with_negative"],
             null_score_diff_threshold=self.args["null_score_diff_threshold"],
             tokenizer=self.tokenizer,
-            language=questions.language
+            language=question.language
         )
 
         all_answers = []
