@@ -7,9 +7,9 @@ from bertserini.experiments.args import *
 
 if __name__ == "__main__":
     questions = extract_squad_questions(args.dataset_path, do_strip_accents=args.strip_accents)
-    bert_reader = BERT(args.model_name_or_path, args.tokenizer_name)
+    bert_reader = BERT(args)
     bert_reader.update_args({"version_2_with_negative": args.support_no_answer})
-    searcher = build_searcher(args.index_path, language=args.language)
+    searcher = build_searcher(args)
 
     all_answer = []
     for question in tqdm(questions):

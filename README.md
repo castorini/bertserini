@@ -62,7 +62,7 @@ NOTE:
 
  The index we used above is English Wikipedia, which could be download via:
 ```
-wget ftp://72.143.107.253/BERTserini/english_wiki_2018_index.zip
+wget https://rgw.cs.uwaterloo.ca/JIMMYLIN-bucket0/pyserini-indexes/lucene-index.enwiki-20180701-paragraphs.tar.gz
 ```
 
 After unzipping these file, we suggest you putting it in `indexes/`.
@@ -79,6 +79,35 @@ Please see following documents for details:
 
 ## Training
 To finetune BERT on the SQuAD style dataset, please see [here](docs/train_squad.md) for details.
+
+
+## DPR supporting
+
+We enabled DPR retriever with [pyserini](https://github.com/castorini/pyserini) indexed corpus.
+The corpus is created from the command:
+```
+python -m pyserini.encode \
+    input   --corpus <original_corpus_dir> \
+            --delimiter "DoNotApplyDelimiterPlease" \
+            --shard-id 0 \
+            --shard-num 1 \
+    output  --embeddings dpr-ctx_encoder-multiset-base.<corpus_name> \
+            --to-faiss \
+    encoder --encoder facebook/dpr-ctx_encoder-multiset-base \
+            --batch-size 16 \
+            --device cuda:0 \
+            --fp16  # if inference with autocast()
+```
+
+When enable dpr option in e2e inference, please set the following arguments:
+
+```
+--retriever dpr \
+--encoder <path to dpr query encoder> \
+--index_path <pyserini indexed dpr dir> \
+--sparse_index <bm25 indexed corpus dir> \ # the dense index doesn't store the raw text, we need to get the original text from the sparse index
+--device cuda:0
+```
 
 ## Citation
 

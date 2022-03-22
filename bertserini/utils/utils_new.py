@@ -1,4 +1,6 @@
 import json
+from hanziconv import HanziConv
+
 from bertserini.reader.base import Question
 from bertserini.utils.utils import strip_accents
 
@@ -20,6 +22,7 @@ def extract_squad_questions(squad_filename, do_strip_accents=False, language="en
                 question = qa["question"]
                 if do_strip_accents:
                     question = strip_accents(question)
+                if language == "zh":
+                    HanziConv.toSimplified(question)
                 questions.append(Question(question, id_, language))
     return questions
-

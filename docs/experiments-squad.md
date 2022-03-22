@@ -1,6 +1,6 @@
 # Bertserini: Baseline on SQUAD QA
 
-1. Clone the repo with ```git clone https://github.com/rsvp-ai/bertserini.git```
+1. Clone the repo with ```git clone https://github.com/castorini/bertserini.git```
 2. ```pip install -r requirements.txt -f --find-links https://download.pytorch.org/whl/torch_stable.html```
 
 ## Download PreBuilt Wikipedia Index
@@ -8,7 +8,7 @@
 We have indexed the 20180701 Wikipedia dump used in DrQA with Anserini; you can download the prepared index here:
 ```
 cd indexes
-wget https://www.dropbox.com/s/b7qqaos9ot3atlp/lucene-index.enwiki-20180701-paragraphs.tar.gz
+wget https://rgw.cs.uwaterloo.ca/JIMMYLIN-bucket0/pyserini-indexes/lucene-index.enwiki-20180701-paragraphs.tar.gz
 tar -xvf lucene-index.enwiki-20180701-paragraphs.tar.gz
 rm lucene-index.enwiki-20180701-paragraphs.tar.gz
 cd ..
@@ -60,7 +60,7 @@ python -m bertserini.experiments.inference --dataset_path data/dev-v1.1.json \
 ```
 mkdir temp
 python -m bertserini.experiments.evaluate --eval_data data/dev-v1.1.json \
-                                          --search_file prediction/squad_bert_base_pred.json \
+                                          --search_file prediction/squad_bert_<base/large>_pred.json \
                                           --output_path temp \
                                           --dataset squad
                                           
@@ -76,3 +76,4 @@ Expected results:
 ## Replication Log
 
 + Results replicated by [@MXueguang](https://github.com/MXueguang) on 2020-10-07 (commit [`9b670a3`](https://github.com/MXueguang/bertserini/commit/9b670a3942d24eb0188d55a140342257407f9c52)) (Tesla P40)
++ Results replicated by [@amyxie361](https://github.com/amyxie361) on 2022-03-02 (V100)

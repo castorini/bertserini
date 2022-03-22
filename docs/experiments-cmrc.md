@@ -1,6 +1,6 @@
 # Bertserini: Baseline on CMRC QA (in Chinese)
 
-1. Clone the repo with ```git clone https://github.com/rsvp-ai/bertserini.git```
+1. Clone the repo with ```git clone https://github.com/castorini/bertserini.git```
 2. ```pip install -r requirements.txt --find-links https://download.pytorch.org/whl/torch_stable.html```
 
 ## Download PreBuilt Wikipedia Index
@@ -8,7 +8,7 @@
 We have indexed the 2018 Wikipedia Chinese dump. You can download the prepared index here:
 ```
 cd indexes
-wget https://www.dropbox.com/s/6zn16mombt0wirs/lucene-index.zhwiki-20181201-paragraphs.tar.gz
+wget https://rgw.cs.uwaterloo.ca/JIMMYLIN-bucket0/pyserini-indexes/lucene-index.zhwiki-20181201-paragraphs.tar.gz
 tar -xvf lucene-index.zhwiki-20181201-paragraphs.tar.gz
 rm lucene-index.zhwiki-20181201-paragraphs.tar.gz
 cd ..
@@ -72,3 +72,4 @@ Expected results:
 ## Replication Log
 
 + Results replicated by [@MXueguang](https://github.com/MXueguang) on 2020-10-07 (commit [`9b670a3`](https://github.com/MXueguang/bertserini/commit/9b670a3942d24eb0188d55a140342257407f9c52)) (Tesla P40)
++ Results replicated by [@amyxie361](https://github.com/amyxie361) on 2022-03-10 (V100)
