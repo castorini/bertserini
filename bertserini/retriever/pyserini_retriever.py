@@ -84,7 +84,6 @@ def hits_to_contexts(hits: List[JLuceneSearcherResult], language="en", field='ra
         for s in blacklist:
             if s in t:
                 continue
-        #metadata = {'raw': hits.raw, 'docid': hits.docid}
         metadata = {}
         contexts.append(Context(t, language, metadata, score))
     return contexts

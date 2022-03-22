@@ -12,7 +12,6 @@ __all__ = ['BERT']
 
 from bertserini.train.run_squad import to_list
 
-
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
     examples = []
     for idx, ctx in enumerate(contexts):
@@ -105,7 +104,7 @@ class BERT(Reader):
                     end_logits = end_logits.item()
                 except:
                     pass
-                
+
                 result = SquadResult(unique_id, start_logits, end_logits)
 
                 all_results.append(result)

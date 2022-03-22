@@ -98,8 +98,7 @@ def evaluate(dataset, predictions):
             for qa in paragraph['qas']:
                 total += 1
                 if qa['id'] not in predictions:
-                    message = 'Unanswered question ' + qa['id'] + \
-                              ' will receive score 0.'
+                    message = 'Unanswered question ' + str(qa['id']) + ' will receive score 0.'
                     logger.error(message)
                     continue
                 ground_truths = list(map(lambda x: x['text'], qa['answers']))
@@ -144,7 +143,6 @@ def squad_v1_eval(dataset_filename, prediction_filename):
     with open(prediction_filename) as prediction_file:
         predictions = json.load(prediction_file)
     ans = evaluate(dataset, predictions)
-    # print(json.dumps(ans))
     return ans
 
 

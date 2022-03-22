@@ -27,15 +27,11 @@ import math
 import re
 import string
 
-#from ...models.bert import BasicTokenizer
-#from ...utils import logging
-#from transformers.models.bert import BasicTokenizer
-from transformers import AutoTokenizer
 from transformers.utils import logging
+from transformers import AutoTokenizer
 
 
 logger = logging.get_logger(__name__)
-
 
 def normalize_answer(s):
     """Lower text and remove punctuation, articles and extra whitespace."""
@@ -298,9 +294,8 @@ def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False, l
     # and `pred_text`, and check if they are the same length. If they are
     # NOT the same length, the heuristic has failed. If they are the same
     # length, we assume the characters are one-to-one aligned.
-    #tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
-    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, use_fast=False)
 
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, use_fast=False)
     if language=="zh":
         tok_text = "".join(tokenizer.tokenize(orig_text))
     else:
@@ -561,7 +556,6 @@ def compute_predictions_logits(
                 if entry.text:
                     best_non_null_entry = entry
 
-        #probs = _compute_softmax(total_scores)
         probs = total_scores
 
         nbest_json = []
