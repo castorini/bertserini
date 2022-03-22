@@ -96,7 +96,6 @@ class BERT(Reader):
                 eval_feature = features[feature_index.item()]
                 unique_id = int(eval_feature.unique_id)
 
-                output = [to_list(output[i]) for output in outputs]
                 output = [outputs[oname][i] for oname in outputs]
                 start_logits = outputs.start_logits[i]
                 end_logits = outputs.end_logits[i]

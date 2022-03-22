@@ -42,7 +42,7 @@ def retriever(question, searcher, para_num=20):
         results = searcher.search(question.text, k=para_num)
         hits = []
         for r in results:
-            hit = searcher.doc(r.docid).get("raw") 
+            hit = searcher.doc(r.docid).get("raw")
             hits.append((hit, r.score))
     else:
         try:
