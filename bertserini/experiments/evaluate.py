@@ -55,16 +55,17 @@ def get_score_with_results(eval_data, predictions, mu, dataset):
     return eval_result, answers
 
 
-def get_best_mu_with_scores(eval_data, predictions, mu_range, dataset, output_path):
+def get_best_mu_with_scores(eval_data, predictions, mu_range, dataset, output_path, metric="f1"): 
+    # metric = "f1" or "exact_match"
     score_test = {}
     best_mu = 0
-    best_em = 0
+    best_score = 0
     for mu in mu_range:
         eval_result, answers = get_score_with_results(eval_data, predictions, mu, dataset)
         score_test[mu] = eval_result
-        if eval_result["exact_match"] > best_em:
+        if eval_result[metric] > best_score:
             best_mu = mu
-            best_em = eval_result['exact_match']
+            best_score = eval_result[metric]
             json.dump(answers, open(output_path + "/prediction.json", 'w'))
 
     json.dump(score_test, open(output_path + "/score.json", 'w'))

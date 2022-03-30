@@ -1,6 +1,7 @@
 cache*
 *.log
 *.json
+*.sh
 __pycache__/
 .idea/
 indexes/
@@ -8,3 +9,4 @@ build/
 dist/
 
 bertserini.egg-info/
+indexes/

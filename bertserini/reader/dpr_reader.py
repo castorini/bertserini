@@ -2,14 +2,13 @@ from typing import List
 
 import torch
 from torch.utils.data import DataLoader, SequentialSampler
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering, SquadExample, squad_convert_examples_to_features
-from transformers.data.processors.squad import SquadResult
+
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering, SquadExample
+from transformers.data.processors.squad import SquadResult, squad_convert_examples_to_features
+from transformers.models.dpr import DPRReader, DPRReaderTokenizer, DPRQuestionEncoderTokenizer
 
 from bertserini.reader.base import Reader, Question, Context, Answer
 from bertserini.utils.utils_squad_metrics import compute_predictions_logits
-
-__all__ = ['BERT']
-
 from bertserini.train.run_squad import to_list
 
 def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
@@ -30,14 +29,14 @@ def craft_squad_examples(question: Question, contexts: List[Context]) -> List[Sq
     return examples
 
 
-class BERT(Reader):
+class DPR(Reader):
     def __init__(self, args):
         self.model_args = args
         if self.model_args.tokenizer_name is None:
             self.model_args.tokenizer_name = self.model_args.model_name_or_path
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model = AutoModelForQuestionAnswering.from_pretrained(self.model_args.model_name_or_path).to(self.device).eval()
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_args.tokenizer_name, do_lower_case=True, use_fast=False)
+        self.model = DPRReader.from_pretrained(self.model_args.model_name_or_path).to(self.device).eval()
+        self.tokenizer = DPRReaderTokenizer.from_pretrained(self.model_args.tokenizer_name, do_lower_case=True, use_fast=False)
         self.args = {
             "max_seq_length": 384,
             "doc_stride": 128,
@@ -87,7 +86,6 @@ class BERT(Reader):
                 inputs = {
                     "input_ids": batch[0],
                     "attention_mask": batch[1],
-                    "token_type_ids": batch[2],
                 }
                 feature_indices = batch[3]
                 outputs = self.model(**inputs)
@@ -104,8 +102,9 @@ class BERT(Reader):
                     end_logits = end_logits.item()
                 except:
                     pass
-
+                
                 result = SquadResult(unique_id, start_logits, end_logits)
+
                 all_results.append(result)
 
         answers, nbest = compute_predictions_logits(
@@ -126,7 +125,6 @@ class BERT(Reader):
         )
 
         all_answers = []
-
         for idx, ans in enumerate(nbest):
             all_answers.append(Answer(
                 text=nbest[ans][0]["text"],
