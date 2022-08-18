@@ -11,9 +11,21 @@ We demonstrate an end-to-end Open-Domain question answering system that integrat
 Following the Open Domain QA setting of DrQA, we are using Wikipedia as the large scale knowledge source of documents. The system first retrieves several candidate text segmentations among the entire knowledge source of documents, then read through the candidate text segments to determine the answers.
 
 ## Package Installation
+
 ```
-pip install bertserini
+conda create -n bertserini python==3.8.0
+conda activate bertserini
+conda install tqdm
+pip install transformers==4.17
+pip install pyserini==0.17.0
+conda install -c pytorch faiss-gpu
+pip install hanziconv
+pip install zhon
+pip install tensorboard
 ```
+
+Also, install pytorch following instructions here: https://pytorch.org/get-started/locally/
+
 
 ## Development Installation
 BERTserini requires Python 3.6+ and a couple Python dependencies. 
