@@ -6,9 +6,9 @@ from bertserini.experiments.args import *
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
 
 ENG_reader = "BERT"
-do_local_test = True
-do_bm25_test = True
-do_dpr_test = True
+do_local_test = False
+do_bm25_test = False
+do_dpr_test = False
 do_chinese_test = True
 
 if ENG_reader == "BERT":
@@ -51,7 +51,7 @@ if do_dpr_test:
     args.encoder = "facebook/dpr-question_encoder-multiset-base"
     args.query_tokenizer_name = "facebook/dpr-question_encoder-multiset-base"
     args.index_path = "../pyserini/dpr-ctx_encoder-multiset-base.ik-nlp-22_slp" # todo: replicate dpr on wiki and release dpr-indexes
-    args.device = "cuda:0"
+    args.device = "cuda:cpu"
     args.sparse_index = "../anserini/lucene-index.ik-nlp-22"
     searcher = build_searcher(args)
     contexts = retriever(question, searcher, 10)

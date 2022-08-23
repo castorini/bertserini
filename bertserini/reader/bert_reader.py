@@ -37,7 +37,7 @@ class BERT(Reader):
             self.model_args.tokenizer_name = self.model_args.model_name_or_path
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = AutoModelForQuestionAnswering.from_pretrained(self.model_args.model_name_or_path).to(self.device).eval()
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_args.tokenizer_name, do_lower_case=True, use_fast=False)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_args.tokenizer_name, do_lower_case=True)
         self.args = {
             "max_seq_length": 384,
             "doc_stride": 128,
@@ -61,7 +61,6 @@ class BERT(Reader):
 
     def predict(self, question: Question, contexts: List[Context]) -> List[Answer]:
         examples = craft_squad_examples(question, contexts)
-
         features, dataset = squad_convert_examples_to_features(
             examples=examples,
             tokenizer=self.tokenizer,
@@ -79,7 +78,6 @@ class BERT(Reader):
         eval_dataloader = DataLoader(dataset, sampler=eval_sampler, batch_size=self.model_args.eval_batch_size)
 
         all_results = []
-
         for batch in eval_dataloader:
             self.model.eval()
             batch = tuple(t.to(self.device) for t in batch)
