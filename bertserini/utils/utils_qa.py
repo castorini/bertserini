@@ -97,7 +97,7 @@ def postprocess_qa_predictions(
     logger.info(f"Post-processing {len(examples)} example predictions split into {len(features)} features.")
 
     # Let's loop over all the examples!
-    for example_index, example in enumerate(tqdm(examples)):
+    for example_index, example in enumerate(examples):
         # Those are the indices of the features associated to the current example.
         feature_indices = features_per_example[example_index]
 
@@ -312,7 +312,7 @@ def postprocess_qa_predictions_with_beam_search(
     logger.info(f"Post-processing {len(examples)} example predictions split into {len(features)} features.")
 
     # Let's loop over all the examples!
-    for example_index, example in enumerate(tqdm(examples)):
+    for example_index, example in enumerate(examples):
         # Those are the indices of the features associated to the current example.
         feature_indices = features_per_example[example_index]
 

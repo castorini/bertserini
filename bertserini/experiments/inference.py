@@ -14,11 +14,11 @@ if __name__ == "__main__":
 
     all_answer = []
     for question in tqdm(questions):
-        print("before retriever:", time.time())
+        # print("before retriever:", time.time())
         contexts = retriever(question, searcher, args.topk)
-        print("before reader:", time.time())
+        # print("before reader:", time.time())
         final_answers = bert_reader.predict(question, contexts)
-        print("after reader:", time.time())
+        # print("after reader:", time.time())
         final_answers_lst = []
         for ans in final_answers:
             final_answers_lst.append(

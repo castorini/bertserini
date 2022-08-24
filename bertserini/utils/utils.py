@@ -8,8 +8,6 @@ import numpy as np
 from hanziconv import HanziConv
 
 from bertserini.reader.base import Question
-# from bertserini.utils.utils import strip_accents
-
 
 def strip_accents(text):
     return "".join(char for char in unicodedata.normalize('NFKD', text)

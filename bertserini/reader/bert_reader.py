@@ -9,6 +9,8 @@ import numpy as np
 from bertserini.utils.utils_qa import postprocess_qa_predictions
 from bertserini.reader.base import Reader, Question, Context, Answer
 
+from datasets.utils import logging
+
 __all__ = ['BERT']
 
 class BERT(Reader):
@@ -41,9 +43,8 @@ class BERT(Reader):
         for key in args_to_change:
             self.args[key] = args_to_change[key]
 
-
-
     def predict(self, question: Question, contexts: List[Context]) -> List[Answer]:
+        logging.disable_progress_bar()
 
         def prepare_validation_features(examples):
             question_column_name = "question"
@@ -92,7 +93,6 @@ class BERT(Reader):
                     (o if sequence_ids[k] == context_index else None)
                     for k, o in enumerate(tokenized_examples["offset_mapping"][i])
                 ]
-            # print(tokenized_examples)
             return tokenized_examples
 
         def create_and_fill_np_array(start_or_end_logits, dataset, max_len):
@@ -138,23 +138,10 @@ class BERT(Reader):
                 max_answer_length=self.args["max_answer_length"],
                 null_score_diff_threshold=self.args["null_score_diff_threshold"],
                 output_dir="./tmp/",
-                # output_dir=self.args["output_dir"],
-                # log_level=log_level,
                 prefix=stage,
             )
-            # print(predictions)
-            # print(all_nbest_json)
-            # Format the result to the format the metric expects.
-            # if self.args["version_2_with_negative"]:
-            #     formatted_predictions = [
-            #         {"id": k, "prediction_text": v, "no_answer_probability": 0.0} for k, v in predictions.items()
-            #     ]
-            # else:
-            #     formatted_predictions = [{"id": k, "prediction_text": v} for k, v in predictions.items()]
-
-            # references = [{"id": ex["id"], "answers": ex["answers"]} for ex in examples]
-            # return EvalPrediction(predictions=formatted_predictions)#, label_ids=references)
             return all_nbest_json
+
 
         inputs = {"question": [], "context": [], "id": []}
         for i, ctx in enumerate(contexts):
@@ -163,7 +150,6 @@ class BERT(Reader):
             inputs["id"].append(i)
         eval_examples = Dataset.from_dict(inputs)
         column_names = eval_examples.column_names
-
         eval_dataset = eval_examples.map(
             prepare_validation_features,
             batched=True,
