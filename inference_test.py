@@ -1,7 +1,7 @@
 from bertserini.reader.base import Question, Context
 from bertserini.reader.bert_reader import BERT
 from bertserini.reader.dpr_reader import DPR
-from bertserini.utils.utils_new import get_best_answer
+from bertserini.utils.utils import get_best_answer
 from bertserini.experiments.args import *
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
 

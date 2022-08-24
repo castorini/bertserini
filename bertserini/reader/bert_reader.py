@@ -6,29 +6,10 @@ from transformers import AutoTokenizer, AutoModelForQuestionAnswering, default_d
 from datasets import Dataset
 import numpy as np
 
-from bertserini.utils.squad import SquadExample
 from bertserini.utils.utils_qa import postprocess_qa_predictions
 from bertserini.reader.base import Reader, Question, Context, Answer
 
 __all__ = ['BERT']
-
-def craft_squad_examples(question: Question, contexts: List[Context]) -> List[SquadExample]:
-    examples = []
-    for idx, ctx in enumerate(contexts):
-        examples.append(
-            SquadExample(
-                qas_id=idx,
-                question_text=question.text,
-                context_text=ctx.text,
-                answer_text=None,
-                start_position_character=None,
-                title="",
-                is_impossible=False,
-                answers=[],
-            )
-        )
-    return examples
-
 
 class BERT(Reader):
     def __init__(self, args):
@@ -53,6 +34,7 @@ class BERT(Reader):
             "verbose_logging": False,
             "version_2_with_negative": True,
             "null_score_diff_threshold": 0,
+            "pad_on_right": False,
         }
 
     def update_args(self, args_to_change):

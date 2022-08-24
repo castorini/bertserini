@@ -2,7 +2,7 @@ import json
 from tqdm import tqdm
 from bertserini.reader.bert_reader import BERT
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
-from bertserini.utils.utils_new import extract_squad_questions
+from bertserini.utils.utils import extract_squad_questions
 from bertserini.experiments.args import *
 import time
 
