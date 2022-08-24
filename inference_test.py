@@ -6,10 +6,10 @@ from bertserini.experiments.args import *
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
 
 ENG_reader = "BERT"
-do_local_test = False
-do_bm25_test = False
+do_local_test = True
+do_bm25_test = True
 do_dpr_test = False
-do_chinese_test = True
+do_chinese_test = False
 
 if ENG_reader == "BERT":
     args.model_name_or_path = "rsvp-ai/bertserini-bert-base-squad"
@@ -21,19 +21,18 @@ elif ENG_reader == "DPR":
     args.tokenizer_name = "facebook/dpr-reader-multiset-base"
     bert_reader = DPR(args)
 
-question = Question("Why did Mark Twain call the 19th century the glied age?")
+# question = Question("Why did Mark Twain call the 19th century the glied age?")
+question = Question("Where is the capital of China?")
+
 print(question.text)
 
 if do_local_test:
     print("######################### Testing Local Context #########################")
-    contexts = [Context('The "Gilded Age" was a term that Mark Twain used to describe the period of the late 19th century when there had been a dramatic expansion of American wealth and prosperity.')]
+    contexts = [Context('The "Gilded Age" was a term that Mark Twain used to describe the period of the late 19th century when there had been a dramatic expansion of American wealth and prosperity.'),
+                Context('The "Gilded Age"')]
     candidates = bert_reader.predict(question, contexts)
     answer = get_best_answer(candidates, 1.0)
     print("Answer:", answer.text)
-    if answer.text == "there had been a dramatic expansion of American wealth and prosperity":
-        print("Local Context Test Passed")
-    else:
-        print("Wrong Answer")
 
 if do_bm25_test:
     print("######################### Testing BM25 Context #########################")
@@ -43,7 +42,7 @@ if do_bm25_test:
     candidates = bert_reader.predict(question, contexts)
     answer = get_best_answer(candidates, 0.45)
     print("Answer:", answer.text) # todo: no context returned. is the context included? maybe update to another question
-    print("BM25 Test Passed")
+    # print("BM25 Test Passed")
 
 if do_dpr_test:
     print("######################### Testing DPR Context #########################")
