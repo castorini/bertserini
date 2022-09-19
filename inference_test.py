@@ -1,11 +1,12 @@
 from bertserini.reader.base import Question, Context
 from bertserini.reader.bert_reader import BERT
 from bertserini.reader.dpr_reader import DPR
+from bertserini.reader.t5_reader import T5
 from bertserini.utils.utils import get_best_answer
 from bertserini.experiments.args import *
 from bertserini.retriever.pyserini_retriever import retriever, build_searcher
 
-ENG_reader = "BERT"
+ENG_reader = "T5"
 do_local_test = True
 do_bm25_test = True
 do_dpr_test = False
@@ -21,8 +22,13 @@ elif ENG_reader == "DPR":
     args.tokenizer_name = "facebook/dpr-reader-multiset-base"
     bert_reader = DPR(args)
 
+elif ENG_reader == "T5":
+    args.model_name_or_path = "/data/aileen/workspace/t5_test2/models/gpu/checkpoint-10500"
+    args.tokenizer_name = "t5-base"
+    bert_reader = T5(args)
+
 # question = Question("Why did Mark Twain call the 19th century the glied age?")
-question = Question("Where is the capital of China?")
+question = Question("What is the capital city of China?")
 
 print(question.text)
 
@@ -40,6 +46,7 @@ if do_bm25_test:
     searcher = build_searcher(args)
     contexts = retriever(question, searcher, 10)
     candidates = bert_reader.predict(question, contexts)
+    print(candidates)
     answer = get_best_answer(candidates, 0.45)
     print("Answer:", answer.text) # todo: no context returned. is the context included? maybe update to another question
     # print("BM25 Test Passed")
