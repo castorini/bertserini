@@ -45,7 +45,7 @@ Below is a example for English Question-Answering. We also provide an example fo
 ```python
 from bertserini.reader.base import Question, Context
 from bertserini.reader.bert_reader import BERT
-from bertserini.utils.utils_new import get_best_answer
+from bertserini.utils.utils import get_best_answer
 
 model_name = "rsvp-ai/bertserini-bert-base-squad"
 tokenizer_name = "rsvp-ai/bertserini-bert-base-squad"
