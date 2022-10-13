@@ -251,7 +251,7 @@ def squad_evaluate(examples, preds, no_answer_probs=None, no_answer_probability_
     return evaluation
 
 
-def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False, language="en", tokenizer_name="rsvp-ai/bertserini-bert-base-squad"):
+def get_final_text(pred_text, orig_text, do_lower_case, tokenizer, verbose_logging=False, language="en", tokenizer_name="rsvp-ai/bertserini-bert-base-squad"):
     """Project the tokenized prediction back to the original text."""
 
     # When we created the data, we kept track of the alignment between original
@@ -295,7 +295,7 @@ def get_final_text(pred_text, orig_text, do_lower_case, verbose_logging=False, l
     # NOT the same length, the heuristic has failed. If they are the same
     # length, we assume the characters are one-to-one aligned.
 
-    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, use_fast=False)
+    #tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, use_fast=True)
     if language=="zh":
         tok_text = "".join(tokenizer.tokenize(orig_text))
     else:
@@ -422,6 +422,8 @@ def compute_predictions_logits(
     all_predictions = collections.OrderedDict()
     all_nbest_json = collections.OrderedDict()
     scores_diff_json = collections.OrderedDict()
+    import os
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
     for (example_index, example) in enumerate(all_examples):
         features = example_index_to_features[example_index]
@@ -491,7 +493,9 @@ def compute_predictions_logits(
 
         seen_predictions = {}
         nbest = []
+        c = 0
         for pred in prelim_predictions:
+            c += 1
             if len(nbest) >= n_best_size:
                 break
             feature = features[pred.feature_index]
@@ -518,7 +522,7 @@ def compute_predictions_logits(
                     tok_text = " ".join(tok_text.split())
                     orig_text = " ".join(orig_tokens)
 
-                final_text = get_final_text(tok_text, orig_text, do_lower_case, verbose_logging, language=language)
+                final_text = get_final_text(tok_text, orig_text, do_lower_case, tokenizer, verbose_logging=verbose_logging, language=language)
                 if "##" in final_text or "[UNK]" in final_text:
                     print(final_text, "||", tok_text, "||", orig_text)
 
@@ -736,7 +740,7 @@ def compute_predictions_log_probs(
             else:
                 do_lower_case = tokenizer.do_lowercase_and_remove_accent
 
-            final_text = get_final_text(tok_text, orig_text, do_lower_case, verbose_logging)
+            final_text = get_final_text(tok_text, orig_text, do_lower_case, verbose_logging, tokenizer)
 
             if final_text in seen_predictions:
                 continue
